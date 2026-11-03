@@ -721,7 +721,7 @@ function renderResults(result, seconds) {
     el("div", { class: "stat" }, el("div", { class: "k" }, "Change"), el("div", { class: "v " + (diff > 0 ? "up" : diff < 0 ? "down" : "") }, `${diff > 0 ? "+" : ""}${fmt(diff)}`), el("div", {}, delta(b[metric], p[metric])))));
   const extras = [["DPS", "dps"], ["HPS", "hps"], ["TPS", "tps"], ["DTPS", "dtps"], ["Time OOM (s)", "oom_seconds"], ["Fight (s)", "fight_seconds"], ["Iterations", "iterations"]];
   out.push(el("table", { style: "margin-top:12px" }, el("thead", {}, el("tr", {}, el("th", {}, ""), el("th", { class: "num" }, "Baseline"), el("th", { class: "num" }, "Patched"), el("th", { class: "num" }, "Change"))),
-    el("tbody", {}, ...extras.filter(([, k]) => b[k] !== undefined || p[k] !== undefined).map(([label, k]) =>
+    el("tbody", {}, ...extras.filter(([, k]) => b[k] || p[k]).map(([label, k]) =>
       el("tr", {}, el("td", {}, label), el("td", { class: "num" }, fmt(b[k], k === "iterations" ? 0 : 1)), el("td", { class: "num" }, fmt(p[k], k === "iterations" ? 0 : 1)), el("td", { class: "num" }, k === "iterations" ? "" : delta(b[k], p[k])))))));
 
   // Per-spell breakdown, matched by spell id (or name).
@@ -748,7 +748,7 @@ function renderResults(result, seconds) {
       el("td", { class: "sub" }, a.note || ""),
       el("td", { class: "sub" }, [a.rows !== undefined ? `${Array.isArray(a.rows) ? a.rows.length : a.rows} rows` : "", a.fields !== undefined ? `${Array.isArray(a.fields) ? a.fields.length : a.fields} fields` : ""].filter(Boolean).join(", ")))))));
   }
-  out.push(el("div", { class: "sub", style: "margin-top:10px" }, `${result.preset || state.presetName}${result.overrides?.label ? " · " + result.overrides.label : ""} · ${fmt(seconds, 1)} s`));
+  out.push(el("div", { class: "sub", style: "margin-top:10px" }, `${state.presetName}${result.overrides?.label ? " · " + result.overrides.label : ""} · ${fmt(seconds, 1)} s`));
   $("results").replaceChildren(...out);
 }
 

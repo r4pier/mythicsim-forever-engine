@@ -48,7 +48,9 @@ pub fn serve(args: &[String]) -> Result<(), String> {
             }
             "--root" => {
                 index += 1;
-                root = Some(PathBuf::from(args.get(index).ok_or("--root requires a path")?));
+                root = Some(PathBuf::from(
+                    args.get(index).ok_or("--root requires a path")?,
+                ));
             }
             "--no-open" => open = false,
             other => return Err(format!("unsupported serve argument {other}")),
@@ -162,7 +164,11 @@ fn read_request(reader: &mut impl BufRead) -> Result<Option<HttpRequest>, String
     let mut length = 0usize;
     loop {
         let mut header = String::new();
-        if reader.read_line(&mut header).map_err(|err| err.to_string())? == 0 {
+        if reader
+            .read_line(&mut header)
+            .map_err(|err| err.to_string())?
+            == 0
+        {
             break;
         }
         let header = header.trim_end();
@@ -179,7 +185,9 @@ fn read_request(reader: &mut impl BufRead) -> Result<Option<HttpRequest>, String
         return Err("request body too large".into());
     }
     let mut body = vec![0; length];
-    reader.read_exact(&mut body).map_err(|err| err.to_string())?;
+    reader
+        .read_exact(&mut body)
+        .map_err(|err| err.to_string())?;
     let (path, query) = match target.split_once('?') {
         Some((path, query)) => (path.to_string(), parse_query(query)),
         None => (target, HashMap::new()),
@@ -195,9 +203,9 @@ fn read_request(reader: &mut impl BufRead) -> Result<Option<HttpRequest>, String
 fn parse_query(query: &str) -> HashMap<String, String> {
     query
         .split('&')
-        .filter_map(|pair| {
+        .map(|pair| {
             let (key, value) = pair.split_once('=').unwrap_or((pair, ""));
-            Some((decode(key), decode(value)))
+            (decode(key), decode(value))
         })
         .collect()
 }
@@ -236,7 +244,10 @@ fn route(server: &Server, request: &HttpRequest) -> Routed {
         ("GET", "/api/catalog") => json_ok(server.catalog()?.clone()),
         ("GET", "/api/presets") => json_ok(server.presets()?),
         ("GET", "/api/preset") => {
-            let name = request.query.get("name").ok_or((400, "name is required".into()))?;
+            let name = request
+                .query
+                .get("name")
+                .ok_or((400, "name is required".into()))?;
             json_ok(server.preset(name)?)
         }
         ("GET", "/api/items") => {
@@ -245,7 +256,10 @@ fn route(server: &Server, request: &HttpRequest) -> Routed {
             json_ok(server.search_items(slot, text)?)
         }
         ("GET", "/api/spells") => {
-            let text = request.query.get("q").ok_or((400, "q is required".into()))?;
+            let text = request
+                .query
+                .get("q")
+                .ok_or((400, "q is required".into()))?;
             json_ok(server.spells(text)?)
         }
         ("POST", "/api/run") => {
@@ -253,7 +267,10 @@ fn route(server: &Server, request: &HttpRequest) -> Routed {
                 .map_err(|err| (400, format!("body is not JSON: {err}")))?;
             json_ok(server.run(&body)?)
         }
-        _ => Err((404, format!("no route for {} {}", request.method, request.path))),
+        _ => Err((
+            404,
+            format!("no route for {} {}", request.method, request.path),
+        )),
     }
 }
 
@@ -262,8 +279,8 @@ fn internal(err: impl std::fmt::Display) -> (u16, String) {
 }
 
 fn read_jsonl(path: &Path) -> Result<Vec<Value>, (u16, String)> {
-    let text = fs::read_to_string(path)
-        .map_err(|err| internal(format!("{}: {err}", path.display())))?;
+    let text =
+        fs::read_to_string(path).map_err(|err| internal(format!("{}: {err}", path.display())))?;
     text.lines()
         .filter(|line| !line.trim().is_empty())
         .map(|line| serde_json::from_str(line).map_err(internal))
@@ -312,10 +329,9 @@ impl Server {
             return Ok(catalog);
         }
         let data = self.root.join("data");
-        let schema: Value = serde_json::from_slice(
-            &fs::read(data.join("proto-schema.json")).map_err(internal)?,
-        )
-        .map_err(internal)?;
+        let schema: Value =
+            serde_json::from_slice(&fs::read(data.join("proto-schema.json")).map_err(internal)?)
+                .map_err(internal)?;
         let mut messages = serde_json::Map::new();
         for name in SCHEMA_MESSAGES {
             if let Some(message) = schema["messages"].get(*name) {
@@ -350,14 +366,23 @@ impl Server {
 
     /// Races each preset name ships a builder starter for, read from the starters' requests.
     fn races(&self) -> Value {
-        let dir = self.root.join("validation").join("2026-10-04-builder-starters");
+        let dir = self
+            .root
+            .join("validation")
+            .join("2026-10-04-builder-starters");
         let mut races: HashMap<String, Vec<String>> = HashMap::new();
         if let Ok(entries) = fs::read_dir(&dir) {
             for entry in entries.flatten() {
                 let name = entry.file_name().to_string_lossy().into_owned();
-                let Some(spec) = name.split("--").next() else { continue };
-                let Ok(bytes) = fs::read(entry.path()) else { continue };
-                let Ok(request) = serde_json::from_slice::<Value>(&bytes) else { continue };
+                let Some(spec) = name.split("--").next() else {
+                    continue;
+                };
+                let Ok(bytes) = fs::read(entry.path()) else {
+                    continue;
+                };
+                let Ok(request) = serde_json::from_slice::<Value>(&bytes) else {
+                    continue;
+                };
                 if let Some(race) = request["raid"]["parties"][0]["players"][0]["race"].as_str() {
                     let list = races.entry(spec.to_string()).or_default();
                     if !list.iter().any(|known| known == race) {
@@ -377,9 +402,15 @@ impl Server {
         let mut presets = self.patchsim_json(&["presets", "--json"])?;
         if let Some(list) = presets.as_array_mut() {
             for preset in list.iter_mut() {
-                let Some(path) = preset["path"].as_str() else { continue };
-                let Ok(bytes) = fs::read(self.root.join(path)) else { continue };
-                let Ok(request) = serde_json::from_slice::<Value>(&bytes) else { continue };
+                let Some(path) = preset["path"].as_str() else {
+                    continue;
+                };
+                let Ok(bytes) = fs::read(self.root.join(path)) else {
+                    continue;
+                };
+                let Ok(request) = serde_json::from_slice::<Value>(&bytes) else {
+                    continue;
+                };
                 let player = &request["raid"]["parties"][0]["players"][0];
                 preset["class"] = player["class"].clone();
                 preset["race"] = player["race"].clone();
@@ -395,7 +426,9 @@ impl Server {
             .as_array()
             .and_then(|list| list.iter().find(|preset| preset["name"] == name))
             .ok_or_else(|| (404, format!("no preset named {name}")))?;
-        let path = entry["path"].as_str().ok_or((500, "preset has no path".to_string()))?;
+        let path = entry["path"]
+            .as_str()
+            .ok_or((500, "preset has no path".to_string()))?;
         let path = self.root.join(path);
         let request: Value =
             serde_json::from_slice(&fs::read(&path).map_err(internal)?).map_err(internal)?;
@@ -430,7 +463,11 @@ impl Server {
         let items = self.items()?;
         let ids: Vec<i64> = text
             .strip_prefix("ids:")
-            .map(|list| list.split(',').filter_map(|id| id.trim().parse().ok()).collect())
+            .map(|list| {
+                list.split(',')
+                    .filter_map(|id| id.trim().parse().ok())
+                    .collect()
+            })
             .unwrap_or_default();
         if !ids.is_empty() {
             let found: Vec<&Value> = items
@@ -486,12 +523,25 @@ impl Server {
         let overrides_path = dir.join(format!("overrides-{tag}.json"));
         fs::write(&request_path, request.to_string()).map_err(internal)?;
         fs::write(&overrides_path, overrides.to_string()).map_err(internal)?;
+        // patchsim sets the iterations and seed itself (10000 and 42 unless told), so pass the
+        // page's values through.
+        let options = &request["simOptions"];
+        let iterations = options["iterations"].as_u64().unwrap_or(10_000).to_string();
+        let seed = match &options["randomSeed"] {
+            Value::String(seed) if !seed.trim().is_empty() => seed.trim().to_string(),
+            Value::Number(seed) => seed.to_string(),
+            _ => "42".to_string(),
+        };
         let result = self.patchsim_json(&[
             "run",
             "--request",
             &request_path.to_string_lossy(),
             "--overrides",
             &overrides_path.to_string_lossy(),
+            "--iterations",
+            &iterations,
+            "--seed",
+            &seed,
             "--json",
             "-",
         ]);

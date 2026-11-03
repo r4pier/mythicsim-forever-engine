@@ -30,6 +30,25 @@ On macOS and Linux it is `./target/release/patchsim`. `cargo run --release --bin
 
 Changing `overrides.json` needs no rebuild. Rebuild only after pulling new engine code.
 
+## Web page
+
+```powershell
+.\target\release\patchsim.exe serve
+```
+
+This opens http://127.0.0.1:8080/ in your browser (`--port N` picks another port, `--no-open`
+skips the browser). The page works like MythicSim's sim page: pick class, spec and race, the fight
+length and targets, click talents in the trees, change reference gear and enchants by slot, and
+open Advanced settings for the fight, the boss, the rotation, buffs, debuffs and consumables.
+Under Rotation, "Custom APL" takes the rotation JSON exported from MythicSim's rotation editor.
+The Patch overrides panel edits the same changes as `overrides.json` (Import file and Save file
+move them in and out), and Run compares baseline and patched DPS, ability by ability.
+
+The server only listens on your own machine and stops with Ctrl+C. Each run goes through
+`patchsim run`, so the page and the command line always give the same numbers. Overrides and
+custom rotations are remembered in the browser. After an upstream sync that changes talents,
+rerun `python3 tools/web_talents.py` and rebuild so the trees match.
+
 ## Workflow after a patch
 
 1. Read the notes and find each spell: `patchsim spell "Frostbolt"` lists every rank with its
