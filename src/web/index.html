@@ -89,6 +89,21 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .stat .v { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .error { background: rgba(229,83,75,.1); border: 1px solid var(--bad); color: #ffb3ae; border-radius: 6px; padding: 10px 12px; white-space: pre-wrap; font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
 .bar { height: 6px; background: var(--accent); border-radius: 3px; }
+.tl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--panel2); }
+.tl { position: relative; }
+.tl-row { display: flex; height: 26px; border-bottom: 1px solid var(--line); }
+.tl-row:last-child { border-bottom: 0; }
+.tl-row.aura { height: 20px; }
+.tl-label { position: sticky; left: 0; z-index: 2; flex: none; width: 190px; display: flex; align-items: center; gap: 6px; padding: 0 8px; background: var(--panel2); border-right: 1px solid var(--line); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tl-row.aura .tl-label { color: var(--muted); }
+.tl-lane { position: relative; flex: none; }
+.tl-cast { position: absolute; top: 3px; height: 20px; min-width: 20px; box-sizing: border-box; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 3px; overflow: hidden; }
+.tl-cast .ic { width: 18px; height: 18px; border: 0; border-radius: 2px; display: block; }
+.tl-aura { position: absolute; top: 4px; height: 12px; min-width: 3px; box-sizing: border-box; background: rgba(74,163,255,.28); border: 1px solid var(--link); border-radius: 3px; }
+.tl-axis { height: 20px; border-bottom: 1px solid var(--line); }
+.tl-axis .tl-label { color: var(--muted); }
+.tl-tick { position: absolute; top: 0; bottom: 0; border-left: 1px solid var(--line); font-size: 10px; color: var(--muted); padding-left: 3px; line-height: 20px; }
+.tl-grid { position: absolute; top: 0; bottom: 0; border-left: 1px dashed #2a2f3b88; pointer-events: none; }
 /* picker */
 dialog { background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 8px; width: min(560px, 92vw); padding: 16px; }
 dialog::backdrop { background: #000a; }
@@ -765,7 +780,6 @@ function buildRequest() {
     if (!rotation) throw new Error("The custom rotation JSON is not valid. Fix it or switch Rotation back to the spec preset.");
     p.rotation = rotation;
   }
-  delete req.simOptions.debugFirstIteration;
   return req;
 }
 
@@ -828,6 +842,18 @@ function renderResults(result, seconds) {
         el("td", { class: "num" }, fmt(r.b?.[metric])), el("td", { class: "num" }, fmt(r.p?.[metric])), el("td", { class: "num" }, delta(r.b?.[metric], r.p?.[metric] ?? 0)),
         el("td", { class: "num sub" }, `${fmt(r.b?.casts, 1)} / ${fmt(r.p?.casts, 1)}`))))));
   }
+  if (b.timeline || p.timeline) {
+    const holder = el("div");
+    const pick = (which) => {
+      for (const chip of chips.children) chip.classList.toggle("on", chip.dataset.which === which);
+      holder.replaceChildren(renderTimeline((which === "patched" ? p : b).timeline));
+    };
+    const chips = el("div", { style: "display:flex;gap:6px;margin-bottom:8px" },
+      ...[["baseline", "Baseline"], ["patched", "Patched"]].map(([which, label]) =>
+        el("button", { class: "chip", "data-which": which, onclick: () => pick(which) }, label)));
+    out.push(el("h3", {}, "Timeline (first fight)"), chips, holder);
+    pick(p.timeline ? "patched" : "baseline");
+  }
   const applied = p.applied || result.applied || [];
   if (applied.length) {
     out.push(el("h3", {}, "Applied changes"));
@@ -838,6 +864,59 @@ function renderResults(result, seconds) {
   }
   out.push(el("div", { class: "sub", style: "margin-top:10px" }, `${state.presetName}${result.overrides?.label ? " · " + result.overrides.label : ""} · ${fmt(seconds, 1)} s`));
   $("results").replaceChildren(...out);
+}
+
+// One track per ability in the first iteration's log, each cast as its icon stretched over the
+// time it took, then a lane per aura (cooldowns and procs; buffs up all fight are left out).
+const TL_SCALE = 14; // pixels per second
+function timelineIcon(entry) {
+  return entry.spell ? liveIcon("spell", entry.spell) : entry.item ? liveIcon("item", entry.item) : icon(null);
+}
+function renderTimeline(timeline) {
+  if (!timeline || !(timeline.casts || []).length) return el("div", { class: "sub" }, "No combat log for this run.");
+  const end = Math.max(timeline.end || 0, ...timeline.casts.map((c) => c.t + c.effective_time));
+  const width = Math.ceil(end * TL_SCALE) + 24;
+  const px = (seconds) => `${(seconds * TL_SCALE).toFixed(1)}px`;
+  const lane = (...kids) => el("div", { class: "tl-lane", style: `width:${width}px` }, ...kids);
+  const label = (entry, extra) => el("div", { class: "tl-label", title: entry.name }, timelineIcon(entry), el("span", {}, entry.name), extra);
+  const step = end > 300 ? 30 : end > 120 ? 10 : 5;
+  const ticks = [], grid = [];
+  for (let t = 0; t <= end; t += step) {
+    ticks.push(el("div", { class: "tl-tick", style: `left:${px(t)}` }, `${t}s`));
+    grid.push(el("div", { class: "tl-grid", style: `left:${px(t)}` }));
+  }
+  const rows = [el("div", { class: "tl-row tl-axis" }, el("div", { class: "tl-label" }, "Time"), lane(...ticks))];
+  const tracks = new Map();
+  for (const c of timeline.casts) {
+    if (!tracks.has(c.name)) tracks.set(c.name, []);
+    tracks.get(c.name).push(c);
+  }
+  for (const [, casts] of tracks) {
+    rows.push(el("div", { class: "tl-row" }, label(casts[0], el("span", { class: "sub" }, `×${casts.length}`)),
+      lane(...grid.map((g) => g.cloneNode()), ...casts.map((c) => el("div", {
+        class: "tl-cast", style: `left:${px(c.t)};width:${px(c.effective_time)}`,
+        title: `${c.name}
+${fmt(c.t, 2)} s · cast ${fmt(c.cast_time, 2)} s · ${fmt(c.effective_time, 2)} s on the timeline`,
+      }, timelineIcon(c))))));
+  }
+  const lanes = new Map();
+  let allFight = 0;
+  for (const a of timeline.auras || []) {
+    if (a.start <= 0 && a.end >= (timeline.end || end)) { allFight++; continue; }
+    if (!lanes.has(a.name)) lanes.set(a.name, []);
+    lanes.get(a.name).push(a);
+  }
+  for (const [, auras] of lanes) {
+    rows.push(el("div", { class: "tl-row aura" }, label(auras[0]),
+      lane(...grid.map((g) => g.cloneNode()), ...auras.map((a) => el("div", {
+        class: "tl-aura", style: `left:${px(a.start)};width:${px(a.end - a.start)}`,
+        title: `${a.name}
+${fmt(a.start, 2)} s to ${fmt(a.end, 2)} s (${fmt(a.end - a.start, 2)} s)`,
+      })))));
+  }
+  return el("div", {},
+    el("div", { class: "tl-wrap" }, el("div", { class: "tl", style: `width:${width + 190}px` }, ...rows)),
+    el("div", { class: "sub", style: "margin-top:6px" }, `${timeline.casts.length} casts over ${fmt(end, 1)} s${allFight ? ` · ${allFight} buffs up all fight not shown` : ""}`));
 }
 
 init();
