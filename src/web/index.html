@@ -42,26 +42,39 @@ h3 { font-size: 13px; margin: 18px 0 8px; }
 .field label { display: block; color: var(--muted); font-size: 12px; margin-bottom: 4px; }
 .field select, .field input { width: 100%; }
 .check { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
+.check .ic { width: 18px; height: 18px; }
+.check.off .ic { filter: grayscale(1); opacity: .5; }
 .check input { accent-color: var(--accent); width: 16px; height: 16px; }
 .check.off span { color: var(--muted); }
 .more { color: var(--accent); cursor: pointer; font-size: 12px; margin-top: 6px; display: inline-block; }
+/* icons */
+.ic { width: 20px; height: 20px; border-radius: 3px; border: 1px solid #000; vertical-align: middle; flex: none; object-fit: cover; background: #0004; }
+.ic.lg { width: 30px; height: 30px; }
+.ic.sm { width: 16px; height: 16px; }
+.chip .ic { margin-right: 6px; width: 18px; height: 18px; }
+.chip { display: inline-flex; align-items: center; }
+.iconrow { display: flex; align-items: center; gap: 8px; }
 /* talents */
 .trees { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .tree { background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 10px; }
 .tree header { border: 0; padding: 0 0 8px; display: flex; justify-content: space-between; font-weight: 600; }
-.talent { display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; margin: 2px 0; border: 1px solid transparent; border-radius: 4px; cursor: pointer; user-select: none; font-size: 12.5px; color: var(--muted); }
+.talent { display: flex; gap: 8px; align-items: center; padding: 3px 6px; margin: 2px 0; border: 1px solid transparent; border-radius: 4px; cursor: pointer; user-select: none; font-size: 12.5px; color: var(--muted); }
 .talent:hover { border-color: var(--line); }
 .talent.some { color: var(--text); border-color: #3a3f4d; }
 .talent.max { color: #ffd479; border-color: #7d6a2a; background: rgba(255,212,121,.05); }
+.talent .nm { flex: 1; }
+.talent:not(.some):not(.max) .ic { filter: grayscale(1); opacity: .45; }
+.talent.max .ic { border-color: #c9a227; }
+.talent.some .ic { border-color: #3fbf6f; }
 .talent .rk { font-variant-numeric: tabular-nums; font-size: 11px; background: #0008; border-radius: 3px; padding: 0 5px; }
 /* gear */
 .gear { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 28px; }
-.slot { display: grid; grid-template-columns: 80px 1fr auto; gap: 8px; align-items: center; padding: 5px 0; border-bottom: 1px solid #1f2430; }
+.slot { display: grid; grid-template-columns: 74px 22px 1fr auto; gap: 8px; align-items: center; padding: 5px 0; border-bottom: 1px solid #1f2430; }
 .slot .name { color: var(--link); cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .slot .name.empty { color: var(--muted); }
-.slot .ench { font-size: 11px; color: #5fd08a; border: 1px solid #2c6b45; border-radius: 3px; padding: 1px 6px; cursor: pointer; white-space: nowrap; max-width: 210px; overflow: hidden; text-overflow: ellipsis; }
+.slot .ench { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #5fd08a; border: 1px solid #2c6b45; border-radius: 3px; padding: 1px 6px; cursor: pointer; white-space: nowrap; max-width: 210px; overflow: hidden; text-overflow: ellipsis; }
 .slot .ench.none { color: var(--muted); border-color: var(--line); }
-.q2 { color: #1eff00 !important; } .q3 { color: #4aa3ff !important; } .q4 { color: #b56cff !important; } .q5 { color: #ff8000 !important; }
+.q0 { color: #9d9d9d !important; } .q1 { color: #ffffff !important; } .q2 { color: #1eff00 !important; } .q3 { color: #4aa3ff !important; } .q4 { color: #b56cff !important; } .q5 { color: #ff8000 !important; }
 /* overrides */
 table { border-collapse: collapse; width: 100%; }
 th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
@@ -80,7 +93,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 dialog { background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 8px; width: min(560px, 92vw); padding: 16px; }
 dialog::backdrop { background: #000a; }
 .picklist { max-height: 50vh; overflow: auto; margin-top: 10px; }
-.pick { padding: 6px 8px; border-radius: 4px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; }
+.pick { align-items: center; padding: 6px 8px; border-radius: 4px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; }
 .pick:hover { background: var(--panel2); }
 .footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; }
 @media (max-width: 800px) {
@@ -210,6 +223,62 @@ const store = {
 const humanize = (name) => name.replace(/^(Class|Race|MobType|TristateEffect)/, "").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/^./, (c) => c.toUpperCase());
 const fmt = (n, d = 1) => (n === undefined || n === null || isNaN(n)) ? "-" : Number(n).toLocaleString(undefined, { minimumFractionDigits: d, maximumFractionDigits: d });
 
+// ---------- icons ----------
+// Images come from Wowhead's icon CDN. Talent, buff and consumable icon names ship in
+// icons.json; gear and ability icons are looked up live from Wowhead's tooltip API (classic first,
+// then later databases) and remembered in this browser.
+const ICON_URL = (name) => `https://wow.zamimg.com/images/wow/icons/medium/${name}.jpg`;
+const FALLBACK_ICON = "inv_misc_questionmark";
+function icon(name, cls = "ic") {
+  const img = el("img", { class: cls, alt: "", loading: "lazy", src: ICON_URL(name || FALLBACK_ICON) });
+  img.addEventListener("error", () => { if (!img.src.endsWith(FALLBACK_ICON + ".jpg")) img.src = ICON_URL(FALLBACK_ICON); }, { once: false });
+  return img;
+}
+const iconCache = store.get("icons", {});
+const iconWaits = new Map();
+let iconSave;
+const FLAVORS = { item: ["classic", "tbc", "wotlk", ""], spell: ["classic", "tbc", "wotlk", ""] };
+async function lookupIcon(kind, id) {
+  if (!id) return null;
+  const key = `${kind}:${id}`;
+  if (key in iconCache) return iconCache[key];
+  if (iconWaits.has(key)) return iconWaits.get(key);
+  const wait = (async () => {
+    let found = null;
+    for (const flavor of FLAVORS[kind]) {
+      try {
+        const res = await fetch(`https://nether.wowhead.com/${flavor ? flavor + "/" : ""}tooltip/${kind}/${id}`);
+        const data = await res.json();
+        if (data && data.icon) { found = { icon: data.icon, quality: data.quality ?? null }; break; }
+      } catch { /* offline or blocked: keep the placeholder */ return null; }
+    }
+    iconCache[key] = found;
+    clearTimeout(iconSave); iconSave = setTimeout(() => store.set("icons", iconCache), 500);
+    return found;
+  })();
+  iconWaits.set(key, wait);
+  return wait;
+}
+// An icon that fills in once Wowhead answers; `then` gets the lookup (for item quality).
+function liveIcon(kind, id, cls = "ic", then) {
+  const img = icon(null, cls);
+  lookupIcon(kind, id).then((found) => { if (found) img.src = ICON_URL(found.icon); if (then) then(found); });
+  return img;
+}
+const QUALITY = ["q0", "q1", "q2", "q3", "q4", "q5"];
+const classSlug = (cls) => cls.replace("Class", "").toLowerCase();
+function specIcon(preset) {
+  const cls = classSlug(classOf(preset));
+  const trees = state.catalog.icons.trees[cls] || [];
+  const names = (state.catalog.talents[cls] || []).map((t) => t.name.toLowerCase());
+  const n = preset.name;
+  const alias = { ret: "retribution", smite: "holy", shockadin: "holy", feral: "feral combat", fury: "fury", hunter: "beast mastery", warrior: "fury", frostfire: "fire" };
+  let index = names.findIndex((t) => n.startsWith(t.split(" ")[0]));
+  for (const [k, v] of Object.entries(alias)) if (index < 0 && n.startsWith(k)) index = names.indexOf(v);
+  return trees[Math.max(0, index)];
+}
+const raceIcon = (race) => "race_" + ({ RaceNightElf: "nightelf", RaceUndead: "scourge", RaceBloodElf: "bloodelf" }[race] || race.replace("Race", "").toLowerCase()) + "_male";
+
 const CLASSES = ["ClassDruid", "ClassHunter", "ClassMage", "ClassPaladin", "ClassPriest", "ClassRogue", "ClassShaman", "ClassWarlock", "ClassWarrior"];
 const CLASS_COLORS = { ClassDruid: "#ff7d0a", ClassHunter: "#abd473", ClassMage: "#69ccf0", ClassPaladin: "#f58cba", ClassPriest: "#ffffff", ClassRogue: "#fff569", ClassShaman: "#0070de", ClassWarlock: "#9482c9", ClassWarrior: "#c79c6e" };
 const SLOTS = [
@@ -272,13 +341,13 @@ function renderClasses() {
   const box = $("classes");
   box.replaceChildren(...CLASSES.filter((c) => state.presets.some((p) => classOf(p) === c)).map((cls) =>
     el("button", { class: "chip" + (state.preset && classOf(state.preset) === cls ? " on" : ""), style: `color:${CLASS_COLORS[cls]}`,
-      onclick: () => { const p = state.presets.find((x) => classOf(x) === cls); if (p) loadPreset(p.name); } }, humanize(cls))));
+      onclick: () => { const p = state.presets.find((x) => classOf(x) === cls); if (p) loadPreset(p.name); } }, icon("classicon_" + classSlug(cls)), humanize(cls))));
 }
 
 function renderSpecs() {
   const cls = classOf(state.preset);
   $("specs").replaceChildren(...state.presets.filter((p) => classOf(p) === cls).map((p) =>
-    el("button", { class: "chip" + (p.name === state.presetName ? " on" : ""), onclick: () => loadPreset(p.name) }, humanize(p.name.replace(/-/g, " ")))));
+    el("button", { class: "chip" + (p.name === state.presetName ? " on" : ""), onclick: () => loadPreset(p.name) }, icon(specIcon(p)), humanize(p.name.replace(/-/g, " ")))));
 }
 
 async function loadPreset(name) {
@@ -310,7 +379,10 @@ function renderRace() {
   const current = player().race;
   if (current && !races.includes(current)) races.unshift(current);
   $("race").replaceChildren(...races.map((r) => el("option", { value: r, selected: r === current }, humanize(r))));
-  $("race").onchange = () => { player().race = $("race").value; };
+  const showRace = () => { const old = $("race").previousElementSibling; if (old && old.tagName === "IMG") old.remove(); $("race").before(icon(raceIcon(player().race), "ic lg")); };
+  $("race").parentElement.classList.add("iconrow");
+  showRace();
+  $("race").onchange = () => { player().race = $("race").value; showRace(); };
 }
 
 function renderFight() {
@@ -348,6 +420,8 @@ function talentString(points) {
 
 function renderTalents() {
   const trees = talentTrees();
+  const cls = classSlug(classOf(state.preset));
+  const talentIcons = state.catalog.icons.talents[cls] || {};
   const points = parseTalents(player().talentsString, trees);
   const totals = points.map((t) => t.reduce((a, b) => a + b, 0));
   const total = totals.reduce((a, b) => a + b, 0);
@@ -362,12 +436,12 @@ function renderTalents() {
     renderTalents();
   };
   $("trees").replaceChildren(...trees.map((tree, t) => el("div", { class: "tree" },
-    el("header", {}, el("span", {}, tree.name), el("span", { class: "sub" }, totals[t])),
+    el("header", {}, el("span", { class: "iconrow" }, icon(state.catalog.icons.trees[classSlug(classOf(state.preset))]?.[t]), tree.name), el("span", { class: "sub" }, totals[t])),
     ...tree.talents.map((talent, i) => {
       const rank = points[t][i];
       return el("div", { class: "talent" + (rank ? (rank >= talent.max ? " max" : " some") : ""), title: talent.field,
         onclick: () => change(t, i, 1), oncontextmenu: (e) => { e.preventDefault(); change(t, i, -1); } },
-        el("span", {}, talent.name), el("span", { class: "rk" }, `${rank}/${talent.max}`));
+        icon(talentIcons[talent.field] || state.catalog.icons.trees[cls]?.[t]), el("span", { class: "nm" }, talent.name), el("span", { class: "rk" }, `${rank}/${talent.max}`));
     }))));
 }
 $("talentString").addEventListener("change", () => { player().talentsString = $("talentString").value.trim(); renderTalents(); });
@@ -412,11 +486,12 @@ function renderGear() {
     const item = slots[index];
     const info = item ? state.itemNames.get(item.id) : null;
     const name = item ? (info ? info.name : `Item ${item.id}`) : "Empty";
+    const nameEl = el("span", { class: "name" + (item ? "" : " empty"), title: item ? `Item ${item.id}` : "", onclick: () => pickItem(index, type) }, name);
+    const img = item ? liveIcon("item", item.id, "ic", (found) => { if (found && found.quality !== null) nameEl.classList.add(QUALITY[found.quality]); }) : icon("inv_misc_questionmark", "ic");
+    if (!item) img.style.opacity = ".25";
     return el("div", { class: "slot" },
-      el("span", { class: "sub" }, label),
-      el("span", { class: "name" + (item ? (info && info.quality ? " q" + qualityNumber(info.quality) : "") : " empty"), title: item ? `Item ${item.id}` : "",
-        onclick: () => pickItem(index, type) }, name),
-      item ? el("span", { class: "ench" + (item.enchant ? "" : " none"), onclick: () => pickEnchant(index, type) }, item.enchant ? "+ " + enchantName(item.enchant) : "+ enchant") : el("span"));
+      el("span", { class: "sub" }, label), img, nameEl,
+      item ? el("span", { class: "ench" + (item.enchant ? "" : " none"), onclick: () => pickEnchant(index, type) }, item.enchant ? [icon("trade_engraving", "ic sm"), enchantName(item.enchant)] : "+ enchant") : el("span"));
   }));
 }
 const qualityNumber = (q) => ({ ItemQualityUncommon: 2, ItemQualityRare: 3, ItemQualityEpic: 4, ItemQualityLegendary: 5 })[q] || 1;
@@ -443,7 +518,7 @@ function pickItem(index, type) {
         const s = slotted(); const old = s[index];
         s[index] = { id: item.id, ...(old && old.enchant ? { enchant: old.enchant } : {}) };
         writeSlots(s); picker.close(); renderGear();
-      } }, el("span", { class: item.quality ? "q" + qualityNumber(item.quality) : "" }, item.name), el("span", { class: "sub" }, `${item.id}${item.ilvl ? " · ilvl " + item.ilvl : ""}`)));
+      } }, (() => { const nm = el("span", {}, item.name); return el("span", { class: "iconrow" }, liveIcon("item", item.id, "ic", (f) => { if (f && f.quality !== null) nm.classList.add(QUALITY[f.quality]); }), nm); })(), el("span", { class: "sub" }, `${item.id}${item.ilvl ? " · ilvl " + item.ilvl : ""}`)));
     } else list.push(el("div", { class: "sub", style: "padding:8px" }, "Type a name or an item ID."));
     $("pickerList").replaceChildren(...list);
   });
@@ -472,16 +547,16 @@ function renderToggleGroup(boxId, messageName, values, common) {
     const key = f.json_name;
     if (f.kind === "bool") {
       const input = el("input", { type: "checkbox", checked: !!values[key], onchange: (e) => { if (e.target.checked) values[key] = true; else delete values[key]; wrap.classList.toggle("off", !e.target.checked); } });
-      const wrap = el("label", { class: "check" + (values[key] ? "" : " off") }, input, el("span", {}, humanize(key)));
+      const wrap = el("label", { class: "check" + (values[key] ? "" : " off") }, input, icon(state.catalog.icons.buffs[key]), el("span", {}, humanize(key)));
       return wrap;
     }
     if (f.type === "proto.TristateEffect") {
       const sel = el("select", { onchange: (e) => { if (e.target.value === "TristateEffectMissing") delete values[key]; else values[key] = e.target.value; } },
         ...["TristateEffectMissing", "TristateEffectRegular", "TristateEffectImproved"].map((v) => el("option", { value: v, selected: (values[key] || "TristateEffectMissing") === v }, v === "TristateEffectMissing" ? "Off" : humanize(v))));
-      return el("label", { class: "check" }, el("span", { style: "min-width:150px" }, humanize(key)), sel);
+      return el("label", { class: "check" }, icon(state.catalog.icons.buffs[key]), el("span", { style: "min-width:150px" }, humanize(key)), sel);
     }
     const input = el("input", { type: "number", value: values[key] ?? "", style: "width:80px", onchange: (e) => { if (e.target.value === "" || Number(e.target.value) === 0) delete values[key]; else values[key] = Number(e.target.value); } });
-    return el("label", { class: "check" }, el("span", { style: "min-width:150px" }, humanize(key)), input);
+    return el("label", { class: "check" }, icon(state.catalog.icons.buffs[key]), el("span", { style: "min-width:150px" }, humanize(key)), input);
   };
   const more = el("div", { class: "grid3", style: "display:none;margin-top:4px" }, ...rest.map(item));
   $(boxId).replaceChildren(el("div", { class: "grid3" }, ...first.map(item)),
@@ -529,7 +604,16 @@ function renderConsumes() {
     } }, el("option", { value: 0 }, "None"),
       ...options.map((o) => el("option", { value: o.id, selected: o.id === current }, o.name)),
       current && !options.some((o) => o.id === current) ? el("option", { value: current, selected: true }, `Item ${current}`) : null);
-    return el("div", { class: "field" }, el("label", {}, label), sel);
+    const holder = el("span");
+    const showIcon = () => {
+      const id = Number(sel.value);
+      const known = state.catalog.icons.consumables[String(id)];
+      holder.replaceChildren(!id ? icon("inv_misc_questionmark", "ic lg") : known ? icon(known, "ic lg") : liveIcon("item", id, "ic lg"));
+      if (!id) holder.firstChild.style.opacity = ".25";
+    };
+    sel.addEventListener("change", showIcon);
+    showIcon();
+    return el("div", { class: "field" }, el("label", {}, label), el("div", { class: "iconrow" }, holder, sel));
   });
   const imbue = (key, label) => {
     const input = el("input", { type: "number", value: c[key] || "", placeholder: "item ID", onchange: (e) => { const v = Number(e.target.value); if (v) c[key] = v; else delete c[key]; showName(); } });
@@ -540,18 +624,22 @@ function renderConsumes() {
       name.textContent = state.itemNames.get(id)?.name || "";
     };
     showName();
-    return el("div", { class: "field" }, el("label", {}, label, " ", name), input);
+    const holder = el("span");
+    const showIcon = () => { holder.replaceChildren(c[key] ? liveIcon("item", c[key], "ic lg") : icon("inv_misc_questionmark", "ic lg")); if (!c[key]) holder.firstChild.style.opacity = ".25"; };
+    input.addEventListener("change", showIcon);
+    showIcon();
+    return el("div", { class: "field" }, el("label", {}, label, " ", name), el("div", { class: "iconrow" }, holder, input));
   };
   $("consumes").replaceChildren(...boxes, imbue("mhImbueId", "Main hand oil or stone"), imbue("ohImbueId", "Off hand oil or stone"), imbue("explosiveId", "Explosive"));
   const enc = state.request.encounter;
   const p = player();
-  const check = (label, get, set) => { const input = el("input", { type: "checkbox", checked: !!get(), onchange: (e) => set(e.target.checked) }); return el("label", { class: "check" }, input, el("span", {}, label)); };
+  const check = (label, get, set, iconName) => { const input = el("input", { type: "checkbox", checked: !!get(), onchange: (e) => set(e.target.checked) }); return el("label", { class: "check" }, input, iconName ? icon(iconName) : null, el("span", {}, label)); };
   const bools = ["dragonbreathChili", "goblinSapper", "boglingRoot", "scrollAgi", "scrollStr", "scrollInt", "scrollSpi", "scrollArm"]
     .map((k) => check(humanize(k), () => c[k], (v) => { if (v) c[k] = true; else delete c[k]; }));
   $("extras").replaceChildren(
-    check("Power Infusion (from a raid priest)", () => p.buffs.powerInfusions, (v) => { if (v) p.buffs.powerInfusions = 1; else delete p.buffs.powerInfusions; }),
-    check("Innervate (from a raid druid)", () => p.buffs.innervates, (v) => { if (v) p.buffs.innervates = 1; else delete p.buffs.innervates; }),
-    check("8% hit cap against the boss (no extra 1% hit suppression)", () => enc.noHitSuppression, (v) => { if (v) enc.noHitSuppression = true; else delete enc.noHitSuppression; }),
+    check("Power Infusion (from a raid priest)", () => p.buffs.powerInfusions, (v) => { if (v) p.buffs.powerInfusions = 1; else delete p.buffs.powerInfusions; }, state.catalog.icons.buffs.powerInfusions),
+    check("Innervate (from a raid druid)", () => p.buffs.innervates, (v) => { if (v) p.buffs.innervates = 1; else delete p.buffs.innervates; }, state.catalog.icons.buffs.innervates),
+    check("8% hit cap against the boss (no extra 1% hit suppression)", () => enc.noHitSuppression, (v) => { if (v) enc.noHitSuppression = true; else delete enc.noHitSuppression; }, state.catalog.icons.extras["no hit suppression"]),
     ...bools);
 }
 
@@ -664,7 +752,7 @@ $("spellLookup").addEventListener("click", () => openPicker("Look up a spell", a
   const rows = await api("/api/spells?q=" + encodeURIComponent(q)).catch((err) => [{ error: err.message }]);
   $("pickerList").replaceChildren(...rows.slice(0, 80).map((row) => row.error ? el("div", { class: "error" }, row.error) :
     el("div", { class: "pick", onclick: () => { state.overrides.changes.push({ spell: row.Name, damage: "+10%" }); saveOverrides(); renderOverrides(); picker.close(); } },
-      el("span", {}, `${row.Name}${row.Rank ? " (" + row.Rank + ")" : ""}`),
+      el("span", { class: "iconrow" }, liveIcon("spell", row.ID), `${row.Name}${row.Rank ? " (" + row.Rank + ")" : ""}`),
       el("span", { class: "sub" }, `${row.ID}${row.Effects ? " · " + row.Effects.filter((e) => e.BasePoints || e.SPCoef).map((e) => `${e.BasePoints ?? ""}${e.SPCoef ? " sp " + e.SPCoef : ""}`).join(" / ") : ""}${row.TalentCurve ? " · talent " + JSON.stringify(row.TalentCurve) : ""}`))));
 }));
 
@@ -735,7 +823,7 @@ function renderResults(result, seconds) {
     out.push(el("h3", {}, "Breakdown by ability"));
     out.push(el("table", {}, el("thead", {}, el("tr", {}, el("th", {}, "Ability"), el("th", { style: "width:22%" }, ""), el("th", { class: "num" }, `Baseline ${M}`), el("th", { class: "num" }, `Patched ${M}`), el("th", { class: "num" }, "Change"), el("th", { class: "num" }, "Casts (b / p)"))),
       el("tbody", {}, ...list.map((r) => el("tr", {},
-        el("td", { title: r.spell ? `Spell ${r.spell}` : "" }, r.name),
+        el("td", { title: r.spell ? `Spell ${r.spell}` : "" }, el("span", { class: "iconrow" }, r.spell ? liveIcon("spell", r.spell) : icon(null), r.name)),
         el("td", {}, el("div", { class: "bar", style: `width:${((r.p?.[metric] ?? r.b?.[metric] ?? 0) / top * 100).toFixed(1)}%` })),
         el("td", { class: "num" }, fmt(r.b?.[metric])), el("td", { class: "num" }, fmt(r.p?.[metric])), el("td", { class: "num" }, delta(r.b?.[metric], r.p?.[metric] ?? 0)),
         el("td", { class: "num sub" }, `${fmt(r.b?.casts, 1)} / ${fmt(r.p?.casts, 1)}`))))));
