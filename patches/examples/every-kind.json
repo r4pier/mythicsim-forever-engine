@@ -1,0 +1,17 @@
+{
+  "label": "One of every kind of change (Shadow Priest and Frost Mage spells)",
+  "changes": [
+    { "spell": "Shadow Word: Pain", "damage": "+20%", "note": "whole spell, direct and periodic" },
+    { "spell": "Flash Heal", "healing": "-5%" },
+    { "spell": "Mind Flay", "coefficient": "-10%", "note": "spell power coefficient only" },
+    { "spell": "Mind Blast", "cooldown": "-2s" },
+    { "spell": "Frostbolt", "cast_time": "-0.5s" },
+    { "spell": "Frostbolt", "cost": "-50%" },
+    { "spell": "Ice Lance", "cooldown": "=0s" },
+    { "spell": "Frostbolt", "row": "Effects/1/BasePoints", "value": "+10%", "note": "base damage only; Effects/0 is the slow" },
+    { "spell": 15258, "row": "Effects/0/BasePoints", "value": 4, "note": "Shadow Weaving: 4% per stack instead of 2%" },
+    { "spell": "Critical Mass", "curve": 0, "value": "x1.5", "note": "talent per-rank values; a list must keep the data's rank count" },
+    { "spell": "Arcane Concentration", "curve": true, "value": "x1.5" },
+    { "spell": "Frostbolt", "prepared": "bonus_crit_percent", "value": "+5", "note": "any field of the prepared spell" }
+  ]
+}

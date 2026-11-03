@@ -1,0 +1,17 @@
+{
+  "label": "Example: replace with the patch notes you are testing",
+  "changes": [
+    {
+      "spell": "Frostbolt",
+      "damage": "+10%",
+      "note": "Frostbolt damage increased by 10%",
+      "disabled": true
+    },
+    {
+      "spell": "Ice Lance",
+      "cooldown": "-2s",
+      "note": "Ice Lance cooldown reduced by 2 seconds",
+      "disabled": true
+    }
+  ]
+}

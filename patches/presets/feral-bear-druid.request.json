@@ -1,0 +1,345 @@
+{
+ "encounter": {
+  "duration": 120,
+  "durationVariation": 15,
+  "executeProportion20": 0.2,
+  "executeProportion25": 0.25,
+  "executeProportion35": 0.35,
+  "executeProportion45": 0.45,
+  "executeProportion90": 0.9,
+  "targets": [
+   {
+    "canCrush": true,
+    "damageSpread": 0.3333,
+    "id": 213336,
+    "level": 63,
+    "minBaseDamage": 3000,
+    "name": "Level 60",
+    "parryHaste": true,
+    "stats": [
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     805,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     3731,
+     0,
+     127393,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "swingSpeed": 2
+   }
+  ]
+ },
+ "raid": {
+  "buffs": {
+   "fireResistanceAura": true,
+   "fireResistanceTotem": true,
+   "giftOfTheWild": true,
+   "prayerOfFortitude": true
+  },
+  "debuffs": {
+   "curseOfRecklessness": true,
+   "exposeArmor": true,
+   "faerieFire": true,
+   "giftOfArthas": true,
+   "sunderArmor": true
+  },
+  "parties": [
+   {
+    "buffs": {
+     "battleShout": "TristateEffectRegular",
+     "devotionAura": true,
+     "strengthOfEarthTotem": true,
+     "windfuryTotem": true
+    },
+    "players": [
+     {
+      "buffs": {
+       "greaterBlessingOfKings": true,
+       "greaterBlessingOfMight": true
+      },
+      "class": "ClassDruid",
+      "consumables": {
+       "alcoholId": 21151,
+       "attackPowerBuffId": 12460,
+       "battleElixirId": 13452,
+       "defenseElixirId": 13445,
+       "dragonbreathChili": true,
+       "flaskId": 13510,
+       "foodId": 20452,
+       "guardianElixirId": 3825,
+       "potId": 13455,
+       "potions": [
+        13455
+       ],
+       "strengthBuffId": 12451,
+       "zanzaId": 8410
+      },
+      "equipment": {
+       "items": [
+        {
+         "enchant": 1508,
+         "id": 13404
+        },
+        {
+         "id": 11933
+        },
+        {
+         "id": 12927
+        },
+        {
+         "enchant": 849,
+         "id": 13397
+        },
+        {
+         "enchant": 1891,
+         "id": 13944
+        },
+        {
+         "enchant": 1885,
+         "id": 12966
+        },
+        {
+         "enchant": 1887,
+         "id": 13957
+        },
+        {
+         "id": 14502
+        },
+        {
+         "enchant": 1508,
+         "id": 15065
+        },
+        {
+         "enchant": 1887,
+         "id": 16711
+        },
+        {
+         "id": 17713
+        },
+        {
+         "id": 18500
+        },
+        {
+         "id": 11921
+        },
+        {
+         "id": 23198
+        }
+       ]
+      },
+      "feralBearDruid": {
+       "options": {
+        "classOptions": {
+         "innervateTarget": {}
+        },
+        "startingRage": 0
+       }
+      },
+      "inFrontOfTarget": true,
+      "name": "feral-bear-druid",
+      "race": "RaceNightElf",
+      "reactionTimeMs": 100,
+      "rotation": {
+       "prepullActions": [],
+       "priorityList": [
+        {
+         "action": {
+          "autocastOtherCooldowns": {}
+         }
+        },
+        {
+         "action": {
+          "castSpell": {
+           "spellId": {
+            "spellId": 9907
+           }
+          },
+          "condition": {
+           "auraShouldRefresh": {
+            "auraId": {
+             "spellId": 9907
+            },
+            "maxOverlap": {
+             "const": {
+              "val": "2s"
+             }
+            },
+            "sourceUnit": {
+             "type": "CurrentTarget"
+            }
+           }
+          }
+         }
+        },
+        {
+         "action": {
+          "castSpell": {
+           "spellId": {
+            "spellId": 9898
+           }
+          },
+          "condition": {
+           "auraShouldRefresh": {
+            "auraId": {
+             "spellId": 9898
+            },
+            "maxOverlap": {
+             "const": {
+              "val": "2s"
+             }
+            },
+            "sourceUnit": {
+             "type": "CurrentTarget"
+            }
+           }
+          }
+         }
+        },
+        {
+         "action": {
+          "castSpell": {
+           "spellId": {
+            "spellId": 1238073
+           }
+          }
+         }
+        },
+        {
+         "action": {
+          "castSpell": {
+           "spellId": {
+            "spellId": 1235827
+           }
+          },
+          "condition": {
+           "or": {
+            "vals": [
+             {
+              "cmp": {
+               "lhs": {
+                "auraNumStacks": {
+                 "auraId": {
+                  "spellId": 1235827
+                 },
+                 "sourceUnit": {
+                  "type": "CurrentTarget"
+                 }
+                }
+               },
+               "op": "OpLt",
+               "rhs": {
+                "const": {
+                 "val": "5"
+                }
+               }
+              }
+             },
+             {
+              "cmp": {
+               "lhs": {
+                "dotRemainingTime": {
+                 "spellId": {
+                  "spellId": 1235827
+                 }
+                }
+               },
+               "op": "OpLe",
+               "rhs": {
+                "const": {
+                 "val": "4.5s"
+                }
+               }
+              }
+             }
+            ]
+           }
+          }
+         }
+        },
+        {
+         "action": {
+          "castSpell": {
+           "spellId": {
+            "spellId": 9881,
+            "tag": 1
+           }
+          },
+          "condition": {
+           "cmp": {
+            "lhs": {
+             "currentRage": {}
+            },
+            "op": "OpGe",
+            "rhs": {
+             "const": {
+              "val": "25"
+             }
+            }
+           }
+          }
+         }
+        },
+        {
+         "action": {
+          "castSpell": {
+           "spellId": {
+            "spellId": 1235827
+           }
+          }
+         }
+        }
+       ],
+       "type": "TypeAPL"
+      },
+      "talentsString": "-5500033212300212551-055"
+     }
+    ]
+   }
+  ],
+  "tanks": [
+   {
+    "index": 0,
+    "type": "Player"
+   }
+  ]
+ },
+ "simOptions": {
+  "debugFirstIteration": true,
+  "iterations": 3000,
+  "randomSeed": "42"
+ }
+}

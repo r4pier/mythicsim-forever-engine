@@ -1,0 +1,131 @@
+{
+ "affliction-warlock": "validation/2026-10-04-builder-starters/affliction-warlock--human.request.json",
+ "arms-warrior": "validation/2026-10-04-builder-starters/arms-warrior--human.request.json",
+ "assassination-rogue": "validation/2026-10-04-builder-starters/assassination-rogue--human.request.json",
+ "balance-druid": "validation/2026-10-04-builder-starters/balance-druid--night-elf.request.json",
+ "combat-rogue": "validation/2026-10-04-builder-starters/combat-rogue--human.request.json",
+ "demonology-warlock": "validation/2026-10-04-builder-starters/demonology-warlock--human.request.json",
+ "destruction-warlock": "validation/2026-10-04-builder-starters/destruction-warlock--human.request.json",
+ "elemental-shaman": "validation/2026-10-04-builder-starters/elemental-shaman--orc.request.json",
+ "enhancement-shaman": "validation/2026-10-04-builder-starters/enhancement-shaman--orc.request.json",
+ "feral-bear-druid": {
+  "source": "validation/2026-10-04-builder-starters/feral-bear-druid--night-elf.request.json",
+  "talents_before": "-55000332120132012551-055",
+  "talents_after": "-5500033212300212551-055",
+  "points_dropped": {
+   "berserk": 1
+  }
+ },
+ "fury-protection-warrior": "validation/2026-10-04-builder-starters/fury-protection-warrior--human.request.json",
+ "hunter": "validation/2026-10-04-builder-starters/hunter--human.request.json",
+ "marksmanship-hunter": "validation/2026-10-04-builder-starters/marksmanship-hunter--human.request.json",
+ "protection-paladin": {
+  "source": "validation/2026-10-04-builder-starters/protection-paladin--human.request.json",
+  "talents_before": "50003-0530213301301551-50203",
+  "talents_after": "05003-0530010201320153-5023",
+  "points_dropped": {
+   "improved_seal_of_fury": 1,
+   "shield_specialization": 1,
+   "one_handed_weapon_specialization": 3,
+   "iron_creed": 2
+  }
+ },
+ "protection-warrior": "validation/2026-10-04-builder-starters/protection-warrior--human.request.json",
+ "retribution-paladin": {
+  "source": "validation/2026-10-04-builder-starters/retribution-paladin--human.request.json",
+  "talents_before": "52003-503-05225231001330321",
+  "talents_after": "050030002-203000005-0523320100130033",
+  "points_dropped": {
+   "conviction": 2,
+   "instrument_of_law": 2,
+   "twist_of_light": 1
+  }
+ },
+ "shadow-priest": "validation/2026-10-04-builder-starters/shadow-priest--human.request.json",
+ "smite-priest": "validation/2026-10-04-builder-starters/smite-priest--human.request.json",
+ "subtlety-rogue": "validation/2026-10-04-builder-starters/subtlety-rogue--human.request.json",
+ "survival-hunter": "validation/2026-10-04-builder-starters/survival-hunter--human.request.json",
+ "warrior": "validation/2026-10-04-builder-starters/warrior--human.request.json",
+ "holy-paladin": "fixtures/healers/holy-paladin.request.json",
+ "holy-priest": "fixtures/healers/holy-priest.request.json",
+ "restoration-shaman": "fixtures/healers/restoration-shaman.request.json",
+ "restoration-druid": "fixtures/healers/restoration-druid.request.json",
+ "arcane-mage": {
+  "source": "validation/2026-10-04-builder-starters/arcane-mage--human.request.json",
+  "talents_before": "0551205003100301531-230500001-005",
+  "talents_after": "050205103100301531-305000012-003",
+  "points_dropped": {
+   "arcane_focus": 5,
+   "elemental_precision": 2
+  }
+ },
+ "fire-mage": {
+  "source": "validation/2026-10-04-builder-starters/fire-mage--human.request.json",
+  "talents_before": "05012050030000-13550000130135031-004",
+  "talents_after": "000205103-35500001130133031-003",
+  "points_dropped": {
+   "arcane_focus": 5,
+   "critical_mass": 2,
+   "elemental_precision": 1
+  }
+ },
+ "frost-mage": {
+  "source": "validation/2026-10-04-builder-starters/frost-mage--human.request.json",
+  "talents_before": "05012050030000-03-0555000301001301251",
+  "talents_after": "000205103-3-053500000101301251",
+  "points_dropped": {
+   "arcane_focus": 5
+  },
+  "how": "the starter string does not fit the Go tree order, so the talents come from the remapped frost-mage-2-targets-external-power-infusion fixture (05012050030000-03-053500000101301251)"
+ },
+ "frostfire-mage": {
+  "source": "validation/2026-10-04-builder-starters/frostfire-mage--human.request.json",
+  "talents_before": "-1355000013013403-00550003210013002",
+  "talents_after": "-3550000113013303-00350003210013002",
+  "points_dropped": {
+   "critical_mass": 1,
+   "elemental_precision": 2
+  }
+ },
+ "feral-druid": {
+  "source": "validation/2026-10-04-builder-starters/feral-druid--night-elf.request.json",
+  "talents_before": "050022-55000032021032212051-053",
+  "talents_after": "050022-55000032023002125001-053",
+  "points_dropped": {
+   "improved_shifting_power": 2,
+   "berserk": 1
+  }
+ },
+ "holy-protection-paladin": {
+  "source": "validation/2026-10-04-builder-starters/holy-protection-paladin--human.request.json",
+  "talents_before": "5500300300312125-05302133013-",
+  "talents_after": "0502301302002105-553000020132",
+  "points_dropped": {
+   "reverence": 1,
+   "improved_seal_of_fury": 1,
+   "shield_specialization": 1,
+   "one_handed_weapon_specialization": 3
+  }
+ },
+ "ret-protection-paladin": {
+  "source": "validation/2026-10-04-builder-starters/ret-protection-paladin--human.request.json",
+  "talents_before": "-05302133013-0522533100103032",
+  "talents_after": "000000002-053000020132-0523330100100033",
+  "points_dropped": {
+   "improved_seal_of_fury": 1,
+   "shield_specialization": 1,
+   "one_handed_weapon_specialization": 3,
+   "conviction": 2,
+   "instrument_of_law": 2
+  }
+ },
+ "shockadin-paladin": {
+  "source": "validation/2026-10-04-builder-starters/shockadin-paladin--human.request.json",
+  "talents_before": "550031032001012--052252300012303",
+  "talents_after": "05023210200021-5-0523321000120033",
+  "points_dropped": {
+   "reverence": 1,
+   "conviction": 2
+  }
+ }
+}
