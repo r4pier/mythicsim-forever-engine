@@ -1,0 +1,2480 @@
+{
+ "druid": [
+  {
+   "name": "Balance",
+   "talents": [
+    {
+     "field": "improved_wrath",
+     "name": "Improved Wrath",
+     "max": 5
+    },
+    {
+     "field": "genesis",
+     "name": "Genesis",
+     "max": 5
+    },
+    {
+     "field": "moonglow",
+     "name": "Moonglow",
+     "max": 3
+    },
+    {
+     "field": "improved_moonfire",
+     "name": "Improved Moonfire",
+     "max": 2
+    },
+    {
+     "field": "natures_majesty",
+     "name": "Nature's Majesty",
+     "max": 2
+    },
+    {
+     "field": "natures_reach",
+     "name": "Nature's Reach",
+     "max": 2
+    },
+    {
+     "field": "improved_entangling_roots",
+     "name": "Improved Entangling Roots",
+     "max": 3
+    },
+    {
+     "field": "natures_splendor",
+     "name": "Nature's Splendor",
+     "max": 1
+    },
+    {
+     "field": "insect_swarm",
+     "name": "Insect Swarm",
+     "max": 1
+    },
+    {
+     "field": "vengeance",
+     "name": "Vengeance",
+     "max": 5
+    },
+    {
+     "field": "improved_starfire",
+     "name": "Improved Starfire",
+     "max": 5
+    },
+    {
+     "field": "overgrowth",
+     "name": "Overgrowth",
+     "max": 2
+    },
+    {
+     "field": "natures_grace",
+     "name": "Nature's Grace",
+     "max": 1
+    },
+    {
+     "field": "eclipse",
+     "name": "Eclipse",
+     "max": 3
+    },
+    {
+     "field": "moonfury",
+     "name": "Moonfury",
+     "max": 5
+    },
+    {
+     "field": "moonkin_form",
+     "name": "Moonkin Form",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Feral Combat",
+   "talents": [
+    {
+     "field": "ferocity",
+     "name": "Ferocity",
+     "max": 5
+    },
+    {
+     "field": "furor",
+     "name": "Furor",
+     "max": 5
+    },
+    {
+     "field": "feral_swiftness",
+     "name": "Feral Swiftness",
+     "max": 2
+    },
+    {
+     "field": "feral_instinct",
+     "name": "Feral Instinct",
+     "max": 3
+    },
+    {
+     "field": "brutal_impact",
+     "name": "Brutal Impact",
+     "max": 2
+    },
+    {
+     "field": "thick_hide",
+     "name": "Thick Hide",
+     "max": 3
+    },
+    {
+     "field": "shredding_attacks",
+     "name": "Shredding Attacks",
+     "max": 3
+    },
+    {
+     "field": "savage_fury",
+     "name": "Savage Fury",
+     "max": 2
+    },
+    {
+     "field": "feral_charge",
+     "name": "Feral Charge",
+     "max": 1
+    },
+    {
+     "field": "sharpened_claws",
+     "name": "Sharpened Claws",
+     "max": 2
+    },
+    {
+     "field": "predatory_strikes",
+     "name": "Predatory Strikes",
+     "max": 3
+    },
+    {
+     "field": "lacerate",
+     "name": "Lacerate",
+     "max": 1
+    },
+    {
+     "field": "predatory_discipline",
+     "name": "Predatory Discipline",
+     "max": 1
+    },
+    {
+     "field": "blood_frenzy",
+     "name": "Blood Frenzy",
+     "max": 2
+    },
+    {
+     "field": "leader_of_the_pack",
+     "name": "Leader of the Pack",
+     "max": 1
+    },
+    {
+     "field": "natural_instinct",
+     "name": "Natural Instinct",
+     "max": 2
+    },
+    {
+     "field": "rend_and_tear",
+     "name": "Rend and Tear",
+     "max": 5
+    },
+    {
+     "field": "natural_reaction",
+     "name": "Natural Reaction",
+     "max": 5
+    },
+    {
+     "field": "primal_bite",
+     "name": "Primal Bite",
+     "max": 1
+    },
+    {
+     "field": "shifting_power",
+     "name": "Shifting Power",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Restoration",
+   "talents": [
+    {
+     "field": "natures_focus",
+     "name": "Nature's Focus",
+     "max": 5
+    },
+    {
+     "field": "heart_of_the_wild",
+     "name": "Heart of the Wild",
+     "max": 5
+    },
+    {
+     "field": "naturalist",
+     "name": "Naturalist",
+     "max": 5
+    },
+    {
+     "field": "reflection",
+     "name": "Reflection",
+     "max": 3
+    },
+    {
+     "field": "natural_shapeshifter",
+     "name": "Natural Shapeshifter",
+     "max": 3
+    },
+    {
+     "field": "subtlety",
+     "name": "Subtlety",
+     "max": 3
+    },
+    {
+     "field": "gift_of_nature",
+     "name": "Gift of Nature",
+     "max": 5
+    },
+    {
+     "field": "bloom",
+     "name": "Bloom",
+     "max": 1
+    },
+    {
+     "field": "tranquil_spirit",
+     "name": "Tranquil Spirit",
+     "max": 5
+    },
+    {
+     "field": "improved_rejuvenation",
+     "name": "Improved Rejuvenation",
+     "max": 3
+    },
+    {
+     "field": "swiftmend",
+     "name": "Swiftmend",
+     "max": 1
+    },
+    {
+     "field": "natures_swiftness",
+     "name": "Nature's Swiftness",
+     "max": 1
+    },
+    {
+     "field": "living_spirit",
+     "name": "Living Spirit",
+     "max": 3
+    },
+    {
+     "field": "improved_tranquility",
+     "name": "Improved Tranquility",
+     "max": 2
+    },
+    {
+     "field": "improved_regrowth",
+     "name": "Improved Regrowth",
+     "max": 5
+    },
+    {
+     "field": "wild_growth",
+     "name": "Wild Growth",
+     "max": 1
+    }
+   ]
+  }
+ ],
+ "hunter": [
+  {
+   "name": "Beast Mastery",
+   "talents": [
+    {
+     "field": "deadly_aspects",
+     "name": "Deadly Aspects",
+     "max": 5
+    },
+    {
+     "field": "endurance_training",
+     "name": "Endurance Training",
+     "max": 5
+    },
+    {
+     "field": "focused_fire",
+     "name": "Focused Fire",
+     "max": 2
+    },
+    {
+     "field": "improved_aspect_of_the_monkey",
+     "name": "Improved Aspect of the Monkey",
+     "max": 3
+    },
+    {
+     "field": "improved_revive_pet",
+     "name": "Improved Revive Pet",
+     "max": 2
+    },
+    {
+     "field": "pathfinding",
+     "name": "Pathfinding",
+     "max": 2
+    },
+    {
+     "field": "bestial_swiftness",
+     "name": "Bestial Swiftness",
+     "max": 1
+    },
+    {
+     "field": "unleashed_fury",
+     "name": "Unleashed Fury",
+     "max": 5
+    },
+    {
+     "field": "improved_mend_pet",
+     "name": "Improved Mend Pet",
+     "max": 2
+    },
+    {
+     "field": "ferocity",
+     "name": "Ferocity",
+     "max": 5
+    },
+    {
+     "field": "summon_hawk",
+     "name": "Summon Hawk",
+     "max": 1
+    },
+    {
+     "field": "spirit_bond",
+     "name": "Spirit Bond",
+     "max": 2
+    },
+    {
+     "field": "intimidation",
+     "name": "Intimidation",
+     "max": 1
+    },
+    {
+     "field": "bestial_discipline",
+     "name": "Bestial Discipline",
+     "max": 2
+    },
+    {
+     "field": "frenzy",
+     "name": "Frenzy",
+     "max": 5
+    },
+    {
+     "field": "bestial_wrath",
+     "name": "Bestial Wrath",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Marksmanship",
+   "talents": [
+    {
+     "field": "hawk_eye",
+     "name": "Hawk Eye",
+     "max": 3
+    },
+    {
+     "field": "improved_concussive_shot",
+     "name": "Improved Concussive Shot",
+     "max": 5
+    },
+    {
+     "field": "lethal_attacks",
+     "name": "Lethal Attacks",
+     "max": 5
+    },
+    {
+     "field": "improved_stings",
+     "name": "Improved Stings",
+     "max": 3
+    },
+    {
+     "field": "efficiency",
+     "name": "Efficiency",
+     "max": 5
+    },
+    {
+     "field": "careful_aim",
+     "name": "Careful Aim",
+     "max": 5
+    },
+    {
+     "field": "rapid_killing",
+     "name": "Rapid Killing",
+     "max": 2
+    },
+    {
+     "field": "improved_arcane_shot",
+     "name": "Improved Arcane Shot",
+     "max": 5
+    },
+    {
+     "field": "lone_wolf",
+     "name": "Lone Wolf",
+     "max": 1
+    },
+    {
+     "field": "trueshot_aura",
+     "name": "Trueshot Aura",
+     "max": 1
+    },
+    {
+     "field": "mortal_shots",
+     "name": "Mortal Shots",
+     "max": 5
+    },
+    {
+     "field": "rapid_recuperation",
+     "name": "Rapid Recuperation",
+     "max": 2
+    },
+    {
+     "field": "barrage",
+     "name": "Barrage",
+     "max": 3
+    },
+    {
+     "field": "scatter_shot",
+     "name": "Scatter Shot",
+     "max": 1
+    },
+    {
+     "field": "ranged_weapon_specialization",
+     "name": "Ranged Weapon Specialization",
+     "max": 5
+    },
+    {
+     "field": "sniper_shot",
+     "name": "Sniper Shot",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Survival",
+   "talents": [
+    {
+     "field": "improved_tracking",
+     "name": "Improved Tracking",
+     "max": 5
+    },
+    {
+     "field": "deflection",
+     "name": "Deflection",
+     "max": 5
+    },
+    {
+     "field": "entrapment",
+     "name": "Entrapment",
+     "max": 5
+    },
+    {
+     "field": "savage_strikes",
+     "name": "Savage Strikes",
+     "max": 2
+    },
+    {
+     "field": "survivalist",
+     "name": "Survivalist",
+     "max": 5
+    },
+    {
+     "field": "improved_wing_clip",
+     "name": "Improved Wing Clip",
+     "max": 3
+    },
+    {
+     "field": "clever_traps",
+     "name": "Clever Traps",
+     "max": 2
+    },
+    {
+     "field": "surefooted",
+     "name": "Surefooted",
+     "max": 3
+    },
+    {
+     "field": "deterrence",
+     "name": "Deterrence",
+     "max": 1
+    },
+    {
+     "field": "survival_tactics",
+     "name": "Survival Tactics",
+     "max": 2
+    },
+    {
+     "field": "predators_edge",
+     "name": "Predator's Edge",
+     "max": 5
+    },
+    {
+     "field": "counterattack",
+     "name": "Counterattack",
+     "max": 1
+    },
+    {
+     "field": "resourcefulness",
+     "name": "Resourcefulness",
+     "max": 2
+    },
+    {
+     "field": "expose_prey",
+     "name": "Expose Prey",
+     "max": 2
+    },
+    {
+     "field": "survivalists_discipline",
+     "name": "Survivalist's Discipline",
+     "max": 2
+    },
+    {
+     "field": "strider_kick",
+     "name": "Strider Kick",
+     "max": 1
+    },
+    {
+     "field": "lightning_reflexes",
+     "name": "Lightning Reflexes",
+     "max": 5
+    },
+    {
+     "field": "lacerating_strikes",
+     "name": "Lacerating Strikes",
+     "max": 1
+    }
+   ]
+  }
+ ],
+ "mage": [
+  {
+   "name": "Arcane",
+   "talents": [
+    {
+     "field": "wand_specialization",
+     "name": "Wand Specialization",
+     "max": 2
+    },
+    {
+     "field": "improved_channeling",
+     "name": "Improved Channeling",
+     "max": 5
+    },
+    {
+     "field": "arcane_resilience",
+     "name": "Arcane Resilience",
+     "max": 3
+    },
+    {
+     "field": "arcane_subtlety",
+     "name": "Arcane Subtlety",
+     "max": 2
+    },
+    {
+     "field": "magic_absorption",
+     "name": "Magic Absorption",
+     "max": 2
+    },
+    {
+     "field": "arcane_concentration",
+     "name": "Arcane Concentration",
+     "max": 5
+    },
+    {
+     "field": "missile_barrage",
+     "name": "Missile Barrage",
+     "max": 2
+    },
+    {
+     "field": "arcane_geometry",
+     "name": "Arcane Geometry",
+     "max": 2
+    },
+    {
+     "field": "arcane_impact",
+     "name": "Arcane Impact",
+     "max": 3
+    },
+    {
+     "field": "arcane_blast",
+     "name": "Arcane Blast",
+     "max": 1
+    },
+    {
+     "field": "arcane_shielding",
+     "name": "Arcane Shielding",
+     "max": 2
+    },
+    {
+     "field": "improved_counterspell",
+     "name": "Improved Counterspell",
+     "max": 2
+    },
+    {
+     "field": "arcane_meditation",
+     "name": "Arcane Meditation",
+     "max": 3
+    },
+    {
+     "field": "arcane_wrath",
+     "name": "Arcane Wrath",
+     "max": 1
+    },
+    {
+     "field": "presence_of_mind",
+     "name": "Presence of Mind",
+     "max": 1
+    },
+    {
+     "field": "arcane_mind",
+     "name": "Arcane Mind",
+     "max": 5
+    },
+    {
+     "field": "arcane_instability",
+     "name": "Arcane Instability",
+     "max": 3
+    },
+    {
+     "field": "arcane_power",
+     "name": "Arcane Power",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Fire",
+   "talents": [
+    {
+     "field": "incineration",
+     "name": "Incineration",
+     "max": 5
+    },
+    {
+     "field": "improved_fireball",
+     "name": "Accelerant",
+     "max": 5
+    },
+    {
+     "field": "ignite",
+     "name": "Ignite",
+     "max": 5
+    },
+    {
+     "field": "flame_throwing",
+     "name": "Flame Throwing",
+     "max": 2
+    },
+    {
+     "field": "impact",
+     "name": "Impact",
+     "max": 3
+    },
+    {
+     "field": "burning_soul",
+     "name": "Burning Soul",
+     "max": 3
+    },
+    {
+     "field": "improved_flamestrike",
+     "name": "Improved Flamestrike",
+     "max": 3
+    },
+    {
+     "field": "pyroblast",
+     "name": "Pyroblast",
+     "max": 1
+    },
+    {
+     "field": "improved_fire_blast",
+     "name": "Improved Fire Blast",
+     "max": 2
+    },
+    {
+     "field": "improved_scorch",
+     "name": "Improved Scorch",
+     "max": 3
+    },
+    {
+     "field": "improved_fire_ward",
+     "name": "Improved Fire Ward",
+     "max": 2
+    },
+    {
+     "field": "heating_up",
+     "name": "Heating Up",
+     "max": 1
+    },
+    {
+     "field": "master_of_elements",
+     "name": "Master of Elements",
+     "max": 3
+    },
+    {
+     "field": "critical_mass",
+     "name": "Critical Mass",
+     "max": 3
+    },
+    {
+     "field": "blast_wave",
+     "name": "Blast Wave",
+     "max": 1
+    },
+    {
+     "field": "fire_power",
+     "name": "Fire Power",
+     "max": 3
+    },
+    {
+     "field": "combustion",
+     "name": "Combustion",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Frost",
+   "talents": [
+    {
+     "field": "frost_warding",
+     "name": "Frost Warding",
+     "max": 2
+    },
+    {
+     "field": "improved_frostbolt",
+     "name": "Improved Frostbolt",
+     "max": 5
+    },
+    {
+     "field": "elemental_precision",
+     "name": "Precision",
+     "max": 3
+    },
+    {
+     "field": "ice_shards",
+     "name": "Ice Shards",
+     "max": 5
+    },
+    {
+     "field": "frostbite",
+     "name": "Frostbite",
+     "max": 3
+    },
+    {
+     "field": "improved_frost_nova",
+     "name": "Improved Frost Nova",
+     "max": 2
+    },
+    {
+     "field": "permafrost",
+     "name": "Permafrost",
+     "max": 3
+    },
+    {
+     "field": "frost_channeling",
+     "name": "Frost Channeling",
+     "max": 3
+    },
+    {
+     "field": "improved_blizzard",
+     "name": "Improved Blizzard",
+     "max": 3
+    },
+    {
+     "field": "ice_lance",
+     "name": "Ice Lance",
+     "max": 1
+    },
+    {
+     "field": "arctic_reach",
+     "name": "Arctic Reach",
+     "max": 2
+    },
+    {
+     "field": "ice_block",
+     "name": "Ice Block",
+     "max": 1
+    },
+    {
+     "field": "shatter",
+     "name": "Shatter",
+     "max": 3
+    },
+    {
+     "field": "improved_cone_of_cold",
+     "name": "Improved Cone of Cold",
+     "max": 3
+    },
+    {
+     "field": "cold_snap",
+     "name": "Cold Snap",
+     "max": 1
+    },
+    {
+     "field": "fingers_of_frost",
+     "name": "Fingers of Frost",
+     "max": 2
+    },
+    {
+     "field": "winters_chill",
+     "name": "Winter's Chill",
+     "max": 5
+    },
+    {
+     "field": "ice_barrier",
+     "name": "Ice Barrier",
+     "max": 1
+    }
+   ]
+  }
+ ],
+ "paladin": [
+  {
+   "name": "Holy",
+   "talents": [
+    {
+     "field": "spiritual_focus",
+     "name": "Spiritual Focus",
+     "max": 5
+    },
+    {
+     "field": "divine_strength",
+     "name": "Divine Strength",
+     "max": 5
+    },
+    {
+     "field": "healing_light",
+     "name": "Healing Light",
+     "max": 3
+    },
+    {
+     "field": "reverence",
+     "name": "Reverence",
+     "max": 2
+    },
+    {
+     "field": "improved_seals",
+     "name": "Improved Seals",
+     "max": 5
+    },
+    {
+     "field": "purifying_power",
+     "name": "Purifying Power",
+     "max": 2
+    },
+    {
+     "field": "divine_favor",
+     "name": "Divine Favor",
+     "max": 1
+    },
+    {
+     "field": "illumination",
+     "name": "Illumination",
+     "max": 5
+    },
+    {
+     "field": "holy_conduit",
+     "name": "Holy Conduit",
+     "max": 2
+    },
+    {
+     "field": "divine_precision",
+     "name": "Divine Precision",
+     "max": 2
+    },
+    {
+     "field": "infusion_of_light",
+     "name": "Infusion of Light",
+     "max": 2
+    },
+    {
+     "field": "oath_of_light",
+     "name": "Oath of Light",
+     "max": 1
+    },
+    {
+     "field": "consecrated_ground",
+     "name": "Consecrated Ground",
+     "max": 2
+    },
+    {
+     "field": "holy_shock",
+     "name": "Holy Shock",
+     "max": 1
+    },
+    {
+     "field": "boundless_light",
+     "name": "Boundless Light",
+     "max": 2
+    },
+    {
+     "field": "holy_power",
+     "name": "Holy Power",
+     "max": 5
+    },
+    {
+     "field": "lights_vigil",
+     "name": "Light's Vigil",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Protection",
+   "talents": [
+    {
+     "field": "divine_intellect",
+     "name": "Divine Intellect",
+     "max": 5
+    },
+    {
+     "field": "redoubt",
+     "name": "Redoubt",
+     "max": 5
+    },
+    {
+     "field": "precision",
+     "name": "Precision",
+     "max": 3
+    },
+    {
+     "field": "guardians_favor",
+     "name": "Guardian's Favor",
+     "max": 2
+    },
+    {
+     "field": "sacred_duty",
+     "name": "Sacred Duty",
+     "max": 2
+    },
+    {
+     "field": "templars_bulwark",
+     "name": "Templar's Bulwark",
+     "max": 1
+    },
+    {
+     "field": "improved_hammer_of_justice",
+     "name": "Improved Hammer of Justice",
+     "max": 3
+    },
+    {
+     "field": "shield_specialization",
+     "name": "Shield Specialization",
+     "max": 2
+    },
+    {
+     "field": "toughness",
+     "name": "Toughness",
+     "max": 5
+    },
+    {
+     "field": "swift_judgement",
+     "name": "Swift Judgement",
+     "max": 1
+    },
+    {
+     "field": "improved_righteous_fury",
+     "name": "Improved Righteous Fury",
+     "max": 3
+    },
+    {
+     "field": "anticipation",
+     "name": "Anticipation",
+     "max": 5
+    },
+    {
+     "field": "stoicism",
+     "name": "Stoicism",
+     "max": 2
+    },
+    {
+     "field": "holy_shield",
+     "name": "Holy Shield",
+     "max": 1
+    },
+    {
+     "field": "reckoning",
+     "name": "Reckoning",
+     "max": 5
+    },
+    {
+     "field": "iron_creed",
+     "name": "Iron Creed",
+     "max": 3
+    },
+    {
+     "field": "shieldsworn",
+     "name": "Shieldsworn",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Retribution",
+   "talents": [
+    {
+     "field": "deflection",
+     "name": "Deflection",
+     "max": 5
+    },
+    {
+     "field": "benediction",
+     "name": "Benediction",
+     "max": 5
+    },
+    {
+     "field": "improved_judgement",
+     "name": "Improved Judgement",
+     "max": 2
+    },
+    {
+     "field": "conviction",
+     "name": "Conviction",
+     "max": 3
+    },
+    {
+     "field": "sanctified_judgement",
+     "name": "Sanctified Judgement",
+     "max": 3
+    },
+    {
+     "field": "vindication",
+     "name": "Vindication",
+     "max": 3
+    },
+    {
+     "field": "unyielding_faith",
+     "name": "Unyielding Faith",
+     "max": 2
+    },
+    {
+     "field": "seal_of_command",
+     "name": "Seal of Command",
+     "max": 1
+    },
+    {
+     "field": "pursuit_of_justice",
+     "name": "Pursuit of Justice",
+     "max": 2
+    },
+    {
+     "field": "eye_for_an_eye",
+     "name": "Eye for an Eye",
+     "max": 2
+    },
+    {
+     "field": "sacred_arbiter",
+     "name": "Sacred Arbiter",
+     "max": 1
+    },
+    {
+     "field": "two_handed_weapon_specialization",
+     "name": "Two-Handed Weapon Specialization",
+     "max": 3
+    },
+    {
+     "field": "turn_evil",
+     "name": "Turn Evil",
+     "max": 2
+    },
+    {
+     "field": "repentance",
+     "name": "Repentance",
+     "max": 1
+    },
+    {
+     "field": "vengeance",
+     "name": "Vengeance",
+     "max": 3
+    },
+    {
+     "field": "champion_of_the_light",
+     "name": "Champion of the Light",
+     "max": 5
+    },
+    {
+     "field": "unsealed_wrath",
+     "name": "Unsealed Wrath",
+     "max": 1
+    }
+   ]
+  }
+ ],
+ "priest": [
+  {
+   "name": "Discipline",
+   "talents": [
+    {
+     "field": "power_in_light",
+     "name": "Power In Light",
+     "max": 5
+    },
+    {
+     "field": "wand_specialization",
+     "name": "Wand Specialization",
+     "max": 2
+    },
+    {
+     "field": "twin_disciplines",
+     "name": "Twin Disciplines",
+     "max": 5
+    },
+    {
+     "field": "silent_resolve",
+     "name": "Silent Resolve",
+     "max": 3
+    },
+    {
+     "field": "holy_precision",
+     "name": "Holy Precision",
+     "max": 3
+    },
+    {
+     "field": "mental_strength",
+     "name": "Mental Strength",
+     "max": 5
+    },
+    {
+     "field": "martyrdom",
+     "name": "Martyrdom",
+     "max": 2
+    },
+    {
+     "field": "mental_agility",
+     "name": "Mental Agility",
+     "max": 3
+    },
+    {
+     "field": "inner_focus",
+     "name": "Inner Focus",
+     "max": 1
+    },
+    {
+     "field": "improved_power_word_shield",
+     "name": "Improved Power Word Shield",
+     "max": 5
+    },
+    {
+     "field": "meditation",
+     "name": "Meditation",
+     "max": 3
+    },
+    {
+     "field": "improved_inner_fire",
+     "name": "Improved Inner Fire",
+     "max": 3
+    },
+    {
+     "field": "improved_mana_burn",
+     "name": "Improved Mana Burn",
+     "max": 2
+    },
+    {
+     "field": "soul_warding",
+     "name": "Soul Warding",
+     "max": 1
+    },
+    {
+     "field": "penance",
+     "name": "Penance",
+     "max": 1
+    },
+    {
+     "field": "renewed_hope",
+     "name": "Renewed Hope",
+     "max": 5
+    },
+    {
+     "field": "divine_aegis",
+     "name": "Divine Aegis",
+     "max": 3
+    },
+    {
+     "field": "power_infusion",
+     "name": "Power Infusion",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Holy",
+   "talents": [
+    {
+     "field": "twilight_focus",
+     "name": "Twilight Focus",
+     "max": 3
+    },
+    {
+     "field": "improved_renew",
+     "name": "Improved Renew",
+     "max": 3
+    },
+    {
+     "field": "holy_specialization",
+     "name": "Holy Specialization",
+     "max": 5
+    },
+    {
+     "field": "spell_warding",
+     "name": "Spell Warding",
+     "max": 5
+    },
+    {
+     "field": "divine_fury",
+     "name": "Divine Fury",
+     "max": 5
+    },
+    {
+     "field": "holy_nova",
+     "name": "Holy Nova",
+     "max": 1
+    },
+    {
+     "field": "blessed_recovery",
+     "name": "Blessed Recovery",
+     "max": 3
+    },
+    {
+     "field": "inspiration",
+     "name": "Inspiration",
+     "max": 3
+    },
+    {
+     "field": "holy_reach",
+     "name": "Holy Reach",
+     "max": 2
+    },
+    {
+     "field": "improved_healing",
+     "name": "Improved Healing",
+     "max": 3
+    },
+    {
+     "field": "searing_light",
+     "name": "Searing Light",
+     "max": 2
+    },
+    {
+     "field": "binding_heal",
+     "name": "Binding Heal",
+     "max": 1
+    },
+    {
+     "field": "litany_of_light",
+     "name": "Litany of Light",
+     "max": 2
+    },
+    {
+     "field": "spirit_of_redemption",
+     "name": "Spirit of Redemption",
+     "max": 1
+    },
+    {
+     "field": "spiritual_guidance",
+     "name": "Spiritual Guidance",
+     "max": 5
+    },
+    {
+     "field": "spiritual_healing",
+     "name": "Spiritual Healing",
+     "max": 3
+    },
+    {
+     "field": "prayer_of_mending",
+     "name": "Prayer of Mending",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Shadow",
+   "talents": [
+    {
+     "field": "shadow_focus",
+     "name": "Shadow Focus",
+     "max": 5
+    },
+    {
+     "field": "blackout",
+     "name": "Blackout",
+     "max": 5
+    },
+    {
+     "field": "spirit_tap",
+     "name": "Spirit Tap",
+     "max": 5
+    },
+    {
+     "field": "improved_mind_blast",
+     "name": "Improved Mind Blast",
+     "max": 5
+    },
+    {
+     "field": "improved_shadow_word_pain",
+     "name": "Improved Shadow Word Pain",
+     "max": 5
+    },
+    {
+     "field": "shadow_reach",
+     "name": "Shadow Reach",
+     "max": 2
+    },
+    {
+     "field": "improved_psychic_scream",
+     "name": "Improved Psychic Scream",
+     "max": 2
+    },
+    {
+     "field": "mind_flay",
+     "name": "Mind Flay",
+     "max": 1
+    },
+    {
+     "field": "improved_mind_flay",
+     "name": "Improved Mind Flay",
+     "max": 2
+    },
+    {
+     "field": "dark_inspiration",
+     "name": "Dark Inspiration",
+     "max": 5
+    },
+    {
+     "field": "vampiric_embrace",
+     "name": "Vampiric Embrace",
+     "max": 1
+    },
+    {
+     "field": "shadow_weaving",
+     "name": "Shadow Weaving",
+     "max": 3
+    },
+    {
+     "field": "silence",
+     "name": "Silence",
+     "max": 1
+    },
+    {
+     "field": "devouring_contagion",
+     "name": "Devouring Contagion",
+     "max": 2
+    },
+    {
+     "field": "early_demise",
+     "name": "Early Demise",
+     "max": 2
+    },
+    {
+     "field": "darkness",
+     "name": "Darkness",
+     "max": 5
+    },
+    {
+     "field": "shadowform",
+     "name": "Shadowform",
+     "max": 1
+    }
+   ]
+  }
+ ],
+ "rogue": [
+  {
+   "name": "Assassination",
+   "talents": [
+    {
+     "field": "improved_gouge",
+     "name": "Improved Gouge",
+     "max": 3
+    },
+    {
+     "field": "remorseless_attacks",
+     "name": "Remorseless Attacks",
+     "max": 2
+    },
+    {
+     "field": "malice",
+     "name": "Malice",
+     "max": 5
+    },
+    {
+     "field": "ruthlessness",
+     "name": "Ruthlessness",
+     "max": 3
+    },
+    {
+     "field": "murder",
+     "name": "Murder",
+     "max": 2
+    },
+    {
+     "field": "improved_slice_and_dice",
+     "name": "Improved Slice and Dice",
+     "max": 3
+    },
+    {
+     "field": "relentless_strikes",
+     "name": "Relentless Strikes",
+     "max": 1
+    },
+    {
+     "field": "improved_expose_armor",
+     "name": "Improved Expose Armor",
+     "max": 2
+    },
+    {
+     "field": "lethality",
+     "name": "Lethality",
+     "max": 5
+    },
+    {
+     "field": "vile_poisons",
+     "name": "Vile Poisons",
+     "max": 5
+    },
+    {
+     "field": "cold_blood",
+     "name": "Cold Blood",
+     "max": 1
+    },
+    {
+     "field": "improved_poisons",
+     "name": "Improved Poisons",
+     "max": 5
+    },
+    {
+     "field": "vigor",
+     "name": "Vigor",
+     "max": 2
+    },
+    {
+     "field": "mutilate",
+     "name": "Mutilate",
+     "max": 1
+    },
+    {
+     "field": "improved_kidney_shot",
+     "name": "Improved Kidney Shot",
+     "max": 2
+    },
+    {
+     "field": "seal_fate",
+     "name": "Seal Fate",
+     "max": 5
+    },
+    {
+     "field": "venom",
+     "name": "Venom",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Combat",
+   "talents": [
+    {
+     "field": "improved_eviscerate",
+     "name": "Improved Eviscerate",
+     "max": 3
+    },
+    {
+     "field": "improved_sinister_strike",
+     "name": "Improved Sinister Strike",
+     "max": 2
+    },
+    {
+     "field": "lightning_reflexes",
+     "name": "Lightning Reflexes",
+     "max": 5
+    },
+    {
+     "field": "puncturing_wounds",
+     "name": "Puncturing Wounds",
+     "max": 3
+    },
+    {
+     "field": "deflection",
+     "name": "Deflection",
+     "max": 3
+    },
+    {
+     "field": "precision",
+     "name": "Precision",
+     "max": 3
+    },
+    {
+     "field": "endurance",
+     "name": "Endurance",
+     "max": 2
+    },
+    {
+     "field": "riposte",
+     "name": "Riposte",
+     "max": 1
+    },
+    {
+     "field": "improved_sprint",
+     "name": "Improved Sprint",
+     "max": 2
+    },
+    {
+     "field": "improved_kick",
+     "name": "Improved Kick",
+     "max": 2
+    },
+    {
+     "field": "flawless_execution",
+     "name": "Flawless Execution",
+     "max": 1
+    },
+    {
+     "field": "dual_wield_specialization",
+     "name": "Dual Wield Specialization",
+     "max": 5
+    },
+    {
+     "field": "blade_flurry",
+     "name": "Blade Flurry",
+     "max": 1
+    },
+    {
+     "field": "hack_and_slash",
+     "name": "Hack and Slash",
+     "max": 5
+    },
+    {
+     "field": "weapon_expertise",
+     "name": "Weapon Expertise",
+     "max": 2
+    },
+    {
+     "field": "aggression",
+     "name": "Aggression",
+     "max": 3
+    },
+    {
+     "field": "adrenaline_rush",
+     "name": "Adrenaline Rush",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Subtlety",
+   "talents": [
+    {
+     "field": "camouflage",
+     "name": "Camouflage",
+     "max": 5
+    },
+    {
+     "field": "master_of_deception",
+     "name": "Master of Deception",
+     "max": 3
+    },
+    {
+     "field": "opportunity",
+     "name": "Opportunity",
+     "max": 2
+    },
+    {
+     "field": "setup",
+     "name": "Setup",
+     "max": 3
+    },
+    {
+     "field": "elusiveness",
+     "name": "Elusiveness",
+     "max": 2
+    },
+    {
+     "field": "dirty_tricks",
+     "name": "Dirty Tricks",
+     "max": 2
+    },
+    {
+     "field": "improved_ambush",
+     "name": "Improved Ambush",
+     "max": 3
+    },
+    {
+     "field": "initiative",
+     "name": "Initiative",
+     "max": 3
+    },
+    {
+     "field": "ghostly_strike",
+     "name": "Ghostly Strike",
+     "max": 1
+    },
+    {
+     "field": "improved_distract",
+     "name": "Improved Distract",
+     "max": 2
+    },
+    {
+     "field": "heightened_senses",
+     "name": "Heightened Senses",
+     "max": 2
+    },
+    {
+     "field": "premeditation",
+     "name": "Premeditation",
+     "max": 1
+    },
+    {
+     "field": "serrated_blades",
+     "name": "Serrated Blades",
+     "max": 3
+    },
+    {
+     "field": "dirty_deeds",
+     "name": "Dirty Deeds",
+     "max": 2
+    },
+    {
+     "field": "preparation",
+     "name": "Preparation",
+     "max": 1
+    },
+    {
+     "field": "hemorrhage",
+     "name": "Hemorrhage",
+     "max": 1
+    },
+    {
+     "field": "quietus",
+     "name": "Quietus",
+     "max": 5
+    },
+    {
+     "field": "cutthroat",
+     "name": "Cutthroat",
+     "max": 5
+    },
+    {
+     "field": "thousand_cuts",
+     "name": "Thousand Cuts",
+     "max": 1
+    }
+   ]
+  }
+ ],
+ "shaman": [
+  {
+   "name": "Elemental",
+   "talents": [
+    {
+     "field": "convection",
+     "name": "Convection",
+     "max": 5
+    },
+    {
+     "field": "concussion",
+     "name": "Concussion",
+     "max": 5
+    },
+    {
+     "field": "elemental_devastation",
+     "name": "Elemental Devastation",
+     "max": 3
+    },
+    {
+     "field": "reverberation",
+     "name": "Reverberation",
+     "max": 5
+    },
+    {
+     "field": "elemental_alacrity",
+     "name": "Elemental Alacrity",
+     "max": 3
+    },
+    {
+     "field": "call_of_flame",
+     "name": "Call of Flame",
+     "max": 3
+    },
+    {
+     "field": "elemental_focus",
+     "name": "Elemental Focus",
+     "max": 1
+    },
+    {
+     "field": "elemental_warding",
+     "name": "Elemental Warding",
+     "max": 3
+    },
+    {
+     "field": "trial_by_fire",
+     "name": "Trial By Fire",
+     "max": 2
+    },
+    {
+     "field": "eye_of_the_storm",
+     "name": "Eye of the Storm",
+     "max": 3
+    },
+    {
+     "field": "earthbound",
+     "name": "Earthbound",
+     "max": 1
+    },
+    {
+     "field": "elemental_reach",
+     "name": "Elemental Reach",
+     "max": 2
+    },
+    {
+     "field": "lava_burst",
+     "name": "Lava Burst",
+     "max": 1
+    },
+    {
+     "field": "lightning_overload",
+     "name": "Lightning Overload",
+     "max": 3
+    },
+    {
+     "field": "elemental_fury",
+     "name": "Elemental Fury",
+     "max": 5
+    },
+    {
+     "field": "elemental_mastery",
+     "name": "Elemental Mastery",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Enhancement",
+   "talents": [
+    {
+     "field": "earths_grasp",
+     "name": "Earths Grasp",
+     "max": 5
+    },
+    {
+     "field": "thundering_strikes",
+     "name": "Thundering Strikes",
+     "max": 5
+    },
+    {
+     "field": "ancestral_knowledge",
+     "name": "Ancestral Knowledge",
+     "max": 5
+    },
+    {
+     "field": "guardian_totems",
+     "name": "Guardian Totems",
+     "max": 2
+    },
+    {
+     "field": "mental_dexterity",
+     "name": "Mental Dexterity",
+     "max": 3
+    },
+    {
+     "field": "improved_ghost_wolf",
+     "name": "Improved Ghost Wolf",
+     "max": 2
+    },
+    {
+     "field": "improved_lightning_shield",
+     "name": "Improved Lightning Shield",
+     "max": 3
+    },
+    {
+     "field": "elemental_weapons",
+     "name": "Elemental Weapons",
+     "max": 3
+    },
+    {
+     "field": "shamanistic_focus",
+     "name": "Shamanistic Focus",
+     "max": 1
+    },
+    {
+     "field": "anticipation",
+     "name": "Anticipation",
+     "max": 5
+    },
+    {
+     "field": "toughness",
+     "name": "Toughness",
+     "max": 5
+    },
+    {
+     "field": "flurry",
+     "name": "Flurry",
+     "max": 5
+    },
+    {
+     "field": "stormstrike",
+     "name": "Stormstrike",
+     "max": 1
+    },
+    {
+     "field": "spirit_weapons",
+     "name": "Spirit Weapons",
+     "max": 1
+    },
+    {
+     "field": "mental_quickness",
+     "name": "Mental Quickness",
+     "max": 2
+    },
+    {
+     "field": "improved_stormstrike",
+     "name": "Improved Stormstrike",
+     "max": 2
+    },
+    {
+     "field": "maelstrom_weapon",
+     "name": "Maelstrom Weapon",
+     "max": 5
+    },
+    {
+     "field": "rage_of_the_farseer",
+     "name": "Rage of the Farseer",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Restoration",
+   "talents": [
+    {
+     "field": "improved_healing_wave",
+     "name": "Improved Healing Wave",
+     "max": 5
+    },
+    {
+     "field": "tidal_focus",
+     "name": "Tidal Focus",
+     "max": 5
+    },
+    {
+     "field": "mindfulness",
+     "name": "Mindfulness",
+     "max": 3
+    },
+    {
+     "field": "natural_grace",
+     "name": "Natural Grace",
+     "max": 3
+    },
+    {
+     "field": "totemic_focus",
+     "name": "Totemic Focus",
+     "max": 5
+    },
+    {
+     "field": "improved_reincarnation",
+     "name": "Improved Reincarnation",
+     "max": 2
+    },
+    {
+     "field": "ancestral_healing",
+     "name": "Ancestral Healing",
+     "max": 3
+    },
+    {
+     "field": "healing_focus",
+     "name": "Healing Focus",
+     "max": 3
+    },
+    {
+     "field": "water_shield",
+     "name": "Water Shield",
+     "max": 1
+    },
+    {
+     "field": "tidal_mastery",
+     "name": "Tidal Mastery",
+     "max": 5
+    },
+    {
+     "field": "restorative_totems",
+     "name": "Restorative Totems",
+     "max": 5
+    },
+    {
+     "field": "mana_tide_totem",
+     "name": "Mana Tide Totem",
+     "max": 1
+    },
+    {
+     "field": "healing_way",
+     "name": "Healing Way",
+     "max": 3
+    },
+    {
+     "field": "natures_swiftness",
+     "name": "Natures Swiftness",
+     "max": 1
+    },
+    {
+     "field": "purification",
+     "name": "Purification",
+     "max": 5
+    },
+    {
+     "field": "riptide",
+     "name": "Riptide",
+     "max": 1
+    }
+   ]
+  }
+ ],
+ "warlock": [
+  {
+   "name": "Affliction",
+   "talents": [
+    {
+     "field": "improved_life_tap",
+     "name": "Improved Life Tap",
+     "max": 2
+    },
+    {
+     "field": "suppression",
+     "name": "Suppression",
+     "max": 5
+    },
+    {
+     "field": "improved_corruption",
+     "name": "Improved Corruption",
+     "max": 5
+    },
+    {
+     "field": "grim_reach",
+     "name": "Grim Reach",
+     "max": 2
+    },
+    {
+     "field": "soul_harvest",
+     "name": "Soul Harvest",
+     "max": 2
+    },
+    {
+     "field": "improved_drains",
+     "name": "Improved Drains",
+     "max": 3
+    },
+    {
+     "field": "improved_bane_of_agony",
+     "name": "Improved Bane of Agony",
+     "max": 2
+    },
+    {
+     "field": "fel_concentration",
+     "name": "Fel Concentration",
+     "max": 3
+    },
+    {
+     "field": "amplify_curse",
+     "name": "Amplify Curse",
+     "max": 1
+    },
+    {
+     "field": "pandemic",
+     "name": "Pandemic",
+     "max": 3
+    },
+    {
+     "field": "malevolence",
+     "name": "Malevolence",
+     "max": 5
+    },
+    {
+     "field": "nightfall",
+     "name": "Nightfall",
+     "max": 2
+    },
+    {
+     "field": "curse_of_exhaustion",
+     "name": "Curse of Exhaustion",
+     "max": 1
+    },
+    {
+     "field": "siphon_life",
+     "name": "Siphon Life",
+     "max": 1
+    },
+    {
+     "field": "soul_siphon",
+     "name": "Soul Siphon",
+     "max": 3
+    },
+    {
+     "field": "shadow_mastery",
+     "name": "Shadow Mastery",
+     "max": 5
+    },
+    {
+     "field": "wrack",
+     "name": "Wrack",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Demonology",
+   "talents": [
+    {
+     "field": "improved_health_funnel",
+     "name": "Improved Health Funnel",
+     "max": 2
+    },
+    {
+     "field": "improved_imp",
+     "name": "Improved Imp",
+     "max": 3
+    },
+    {
+     "field": "demonic_embrace",
+     "name": "Demonic Embrace",
+     "max": 5
+    },
+    {
+     "field": "unholy_power",
+     "name": "Unholy Power",
+     "max": 5
+    },
+    {
+     "field": "demonic_aegis",
+     "name": "Demonic Aegis",
+     "max": 2
+    },
+    {
+     "field": "improved_voidwalker",
+     "name": "Improved Voidwalker",
+     "max": 3
+    },
+    {
+     "field": "fel_vitality",
+     "name": "Fel Vitality",
+     "max": 3
+    },
+    {
+     "field": "demonic_energies",
+     "name": "Demonic Energies",
+     "max": 2
+    },
+    {
+     "field": "improved_sayaad",
+     "name": "Improved Sayaad",
+     "max": 3
+    },
+    {
+     "field": "demonic_sacrifice",
+     "name": "Demonic Sacrifice",
+     "max": 1
+    },
+    {
+     "field": "master_summoner",
+     "name": "Master Summoner",
+     "max": 2
+    },
+    {
+     "field": "decimation",
+     "name": "Decimation",
+     "max": 2
+    },
+    {
+     "field": "fel_domination",
+     "name": "Fel Domination",
+     "max": 1
+    },
+    {
+     "field": "demonic_brand",
+     "name": "Demonic Brand",
+     "max": 3
+    },
+    {
+     "field": "improved_felhunter",
+     "name": "Improved Felhunter",
+     "max": 3
+    },
+    {
+     "field": "soul_link",
+     "name": "Soul Link",
+     "max": 1
+    },
+    {
+     "field": "demonic_knowledge",
+     "name": "Demonic Knowledge",
+     "max": 3
+    },
+    {
+     "field": "master_demonologist",
+     "name": "Master Demonologist",
+     "max": 5
+    },
+    {
+     "field": "demonic_pact",
+     "name": "Demonic Pact",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Destruction",
+   "talents": [
+    {
+     "field": "destructive_reach",
+     "name": "Destructive Reach",
+     "max": 2
+    },
+    {
+     "field": "improved_shadow_bolt",
+     "name": "Improved Shadow Bolt",
+     "max": 5
+    },
+    {
+     "field": "bane",
+     "name": "Bane",
+     "max": 5
+    },
+    {
+     "field": "molten_skin",
+     "name": "Molten Skin",
+     "max": 5
+    },
+    {
+     "field": "cataclysm",
+     "name": "Cataclysm",
+     "max": 3
+    },
+    {
+     "field": "aftermath",
+     "name": "Aftermath",
+     "max": 5
+    },
+    {
+     "field": "ruin",
+     "name": "Ruin",
+     "max": 5
+    },
+    {
+     "field": "shadowburn",
+     "name": "Shadowburn",
+     "max": 1
+    },
+    {
+     "field": "intensity",
+     "name": "Intensity",
+     "max": 3
+    },
+    {
+     "field": "agonizing_flames",
+     "name": "Agonizing Flames",
+     "max": 3
+    },
+    {
+     "field": "conflagrate",
+     "name": "Conflagrate",
+     "max": 1
+    },
+    {
+     "field": "pyroclasm",
+     "name": "Pyroclasm",
+     "max": 2
+    },
+    {
+     "field": "bane_of_havoc",
+     "name": "Bane of Havoc",
+     "max": 1
+    },
+    {
+     "field": "fire_and_brimstone",
+     "name": "Fire and Brimstone",
+     "max": 3
+    },
+    {
+     "field": "shadow_and_flame",
+     "name": "Shadow and Flame",
+     "max": 5
+    },
+    {
+     "field": "incinerate",
+     "name": "Incinerate",
+     "max": 1
+    }
+   ]
+  }
+ ],
+ "warrior": [
+  {
+   "name": "Arms",
+   "talents": [
+    {
+     "field": "improved_heroic_strike",
+     "name": "Improved Heroic Strike",
+     "max": 3
+    },
+    {
+     "field": "deflection",
+     "name": "Deflection",
+     "max": 3
+    },
+    {
+     "field": "improved_rend",
+     "name": "Improved Rend",
+     "max": 3
+    },
+    {
+     "field": "improved_charge",
+     "name": "Improved Charge",
+     "max": 2
+    },
+    {
+     "field": "improved_tactical_mastery",
+     "name": "Improved Tactical Mastery",
+     "max": 5
+    },
+    {
+     "field": "improved_overpower",
+     "name": "Improved Overpower",
+     "max": 2
+    },
+    {
+     "field": "anger_management",
+     "name": "Anger Management",
+     "max": 1
+    },
+    {
+     "field": "deep_wounds",
+     "name": "Deep Wounds",
+     "max": 3
+    },
+    {
+     "field": "spearing_strike",
+     "name": "Spearing Strike",
+     "max": 1
+    },
+    {
+     "field": "two_handed_weapon_specialization",
+     "name": "Two Handed Weapon Specialization",
+     "max": 5
+    },
+    {
+     "field": "impale",
+     "name": "Impale",
+     "max": 2
+    },
+    {
+     "field": "bloodthrill",
+     "name": "Bloodthrill",
+     "max": 5
+    },
+    {
+     "field": "sweeping_strikes",
+     "name": "Sweeping Strikes",
+     "max": 1
+    },
+    {
+     "field": "weaponmaster",
+     "name": "Weaponmaster",
+     "max": 5
+    },
+    {
+     "field": "improved_slam",
+     "name": "Improved Slam",
+     "max": 2
+    },
+    {
+     "field": "improved_hamstring",
+     "name": "Improved Hamstring",
+     "max": 3
+    },
+    {
+     "field": "mortal_strike",
+     "name": "Mortal Strike",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Fury",
+   "talents": [
+    {
+     "field": "booming_voice",
+     "name": "Booming Voice",
+     "max": 5
+    },
+    {
+     "field": "cruelty",
+     "name": "Cruelty",
+     "max": 5
+    },
+    {
+     "field": "lingering_rage",
+     "name": "Lingering Rage",
+     "max": 5
+    },
+    {
+     "field": "unbridled_wrath",
+     "name": "Unbridled Wrath",
+     "max": 5
+    },
+    {
+     "field": "furious_precision",
+     "name": "Furious Precision",
+     "max": 3
+    },
+    {
+     "field": "piercing_howl",
+     "name": "Piercing Howl",
+     "max": 1
+    },
+    {
+     "field": "blood_craze",
+     "name": "Blood Craze",
+     "max": 3
+    },
+    {
+     "field": "dual_wield_specialization",
+     "name": "Dual Wield Specialization",
+     "max": 5
+    },
+    {
+     "field": "raging_blows",
+     "name": "Raging Blows",
+     "max": 1
+    },
+    {
+     "field": "enrage",
+     "name": "Enrage",
+     "max": 5
+    },
+    {
+     "field": "improved_execute",
+     "name": "Improved Execute",
+     "max": 2
+    },
+    {
+     "field": "improved_berserker_rage",
+     "name": "Improved Berserker Rage",
+     "max": 2
+    },
+    {
+     "field": "death_wish",
+     "name": "Death Wish",
+     "max": 1
+    },
+    {
+     "field": "improved_intercept",
+     "name": "Improved Intercept",
+     "max": 2
+    },
+    {
+     "field": "flurry",
+     "name": "Flurry",
+     "max": 5
+    },
+    {
+     "field": "gore_drinker",
+     "name": "Gore Drinker",
+     "max": 2
+    },
+    {
+     "field": "bloodthirst",
+     "name": "Bloodthirst",
+     "max": 1
+    }
+   ]
+  },
+  {
+   "name": "Protection",
+   "talents": [
+    {
+     "field": "improved_bloodrage",
+     "name": "Improved Bloodrage",
+     "max": 2
+    },
+    {
+     "field": "shield_specialization",
+     "name": "Shield Specialization",
+     "max": 5
+    },
+    {
+     "field": "iron_will",
+     "name": "Iron Will",
+     "max": 5
+    },
+    {
+     "field": "anticipation",
+     "name": "Anticipation",
+     "max": 5
+    },
+    {
+     "field": "improved_revenge",
+     "name": "Improved Revenge",
+     "max": 3
+    },
+    {
+     "field": "improved_thunder_clap",
+     "name": "Improved Thunder Clap",
+     "max": 3
+    },
+    {
+     "field": "last_stand",
+     "name": "Last Stand",
+     "max": 1
+    },
+    {
+     "field": "master_of_defense",
+     "name": "Master of Defense",
+     "max": 2
+    },
+    {
+     "field": "improved_disarm",
+     "name": "Improved Disarm",
+     "max": 3
+    },
+    {
+     "field": "defiance",
+     "name": "Defiance",
+     "max": 3
+    },
+    {
+     "field": "improved_sunder_armor",
+     "name": "Improved Sunder Armor",
+     "max": 3
+    },
+    {
+     "field": "vanguard",
+     "name": "Vanguard",
+     "max": 1
+    },
+    {
+     "field": "improved_shield_bash",
+     "name": "Improved Shield Bash",
+     "max": 2
+    },
+    {
+     "field": "improved_shield_wall",
+     "name": "Improved Shield Wall",
+     "max": 2
+    },
+    {
+     "field": "concussion_blow",
+     "name": "Concussion Blow",
+     "max": 1
+    },
+    {
+     "field": "focused_rage",
+     "name": "Focused Rage",
+     "max": 3
+    },
+    {
+     "field": "bastion",
+     "name": "Bastion",
+     "max": 5
+    },
+    {
+     "field": "shield_slam",
+     "name": "Shield Slam",
+     "max": 1
+    }
+   ]
+  }
+ ]
+}
