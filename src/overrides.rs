@@ -346,12 +346,12 @@ fn parse(text: &str) -> Result<Overrides, String> {
         for (value, paths, seconds) in shortcuts {
             if let Some(value) = value {
                 let op = Op::parse(value, seconds).map_err(at)?;
-                if paths == DAMAGE || paths == HEALING || paths == COEFFICIENT {
-                    if !matches!(op, Op::Mul(_)) {
-                        return Err(at(
-                            "damage, healing and coefficient take a percent or xN".into()
-                        ));
-                    }
+                if (paths == DAMAGE || paths == HEALING || paths == COEFFICIENT)
+                    && !matches!(op, Op::Mul(_))
+                {
+                    return Err(at(
+                        "damage, healing and coefficient take a percent or xN".into()
+                    ));
                 }
                 kinds.push(Kind::Prepared(paths.to_vec(), op));
             }
@@ -551,7 +551,14 @@ pub fn apply_prepared(prepared: &mut Value) -> Vec<Applied> {
                 walk(prepared, "", &ids, &paths, op, &mut applied.fields);
             }
             Kind::PreparedPath(path, op) => {
-                walk(prepared, "", &ids, &[path.clone()], op, &mut applied.fields);
+                walk(
+                    prepared,
+                    "",
+                    &ids,
+                    std::slice::from_ref(path),
+                    op,
+                    &mut applied.fields,
+                );
             }
             Kind::Row(..) | Kind::Curve(..) => {
                 applied.rows = change.ids.clone();
