@@ -206,7 +206,7 @@ fn run(args: &[String]) -> Result<(), String> {
     let seed = args.values.get("--seed").cloned().unwrap_or("42".into());
     request["simOptions"]["iterations"] = json!(iterations);
     request["simOptions"]["randomSeed"] = json!(seed);
-    request["simOptions"]["debugFirstIteration"] = json!(false);
+    request["simOptions"]["debugFirstIteration"] = json!(true);
     if let Some(duration) = args.values.get("--duration") {
         let seconds: f64 = duration.parse().map_err(|_| "--duration is in seconds")?;
         request["encounter"]["duration"] = json!(seconds);
@@ -316,7 +316,13 @@ fn one(args: &[String]) -> Result<(), String> {
         }
     };
     let report = serde_json::to_value(&report).map_err(|err| err.to_string())?;
-    let summary = summarize(&report["result"], applied);
+    // Go `Unit.Label` for the first player, which tags its lines in the first iteration's log.
+    let name = serde_json::from_slice::<Value>(&request)
+        .ok()
+        .and_then(|request| request.pointer("/raid/parties/0/players/0/name").cloned())
+        .and_then(|name| name.as_str().map(str::to_string))
+        .unwrap_or_default();
+    let summary = summarize(&report["result"], applied, &format!("{name} (#1)"));
     println!("{}", serde_json::to_string(&summary).unwrap());
     Ok(())
 }
@@ -358,7 +364,7 @@ fn sum(targets: &Value, field: &str) -> f64 {
         .unwrap_or(0.0)
 }
 
-fn summarize(result: &Value, applied: Vec<overrides::Applied>) -> Value {
+fn summarize(result: &Value, applied: Vec<overrides::Applied>, player_label: &str) -> Value {
     let player = &result["raidMetrics"]["parties"][0]["players"][0];
     let iterations = result["iterationsDone"].as_f64().unwrap_or(1.0).max(1.0);
     let seconds = result["avgIterationDuration"]
@@ -404,7 +410,128 @@ fn summarize(result: &Value, applied: Vec<overrides::Applied>) -> Value {
         "fight_seconds": seconds,
         "actions": actions,
         "applied": applied,
+        "timeline": timeline(result["logs"].as_str().unwrap_or_default(), player_label),
     })
+}
+
+/// A Go `time.Duration.String()` back in seconds: "2.5s", "1m0s", "714.285714ms".
+fn go_seconds(text: &str) -> Option<f64> {
+    let (sign, mut rest) = match text.strip_prefix('-') {
+        Some(rest) => (-1.0, rest),
+        None => (1.0, text),
+    };
+    if rest == "0" {
+        return Some(0.0);
+    }
+    let mut total = 0.0;
+    while !rest.is_empty() {
+        let digits = rest
+            .find(|c: char| !c.is_ascii_digit() && c != '.')
+            .unwrap_or(rest.len());
+        let number: f64 = rest[..digits].parse().ok()?;
+        rest = &rest[digits..];
+        let unit = rest
+            .find(|c: char| c.is_ascii_digit())
+            .unwrap_or(rest.len());
+        let scale = match &rest[..unit] {
+            "h" => 3600.0,
+            "m" => 60.0,
+            "s" => 1.0,
+            "ms" => 1e-3,
+            "us" | "\u{b5}s" | "\u{3bc}s" => 1e-6,
+            "ns" => 1e-9,
+            _ => return None,
+        };
+        total += number * scale;
+        rest = &rest[unit..];
+    }
+    Some(sign * total)
+}
+
+/// The `{SpellID: 1, Tag: 2}` text of a log line as an action id `action_key` reads.
+fn logged_action(text: &str) -> Option<Value> {
+    let inner = text.strip_prefix('{')?.strip_suffix('}')?;
+    let mut id = json!({});
+    for part in inner.split(", ") {
+        let (key, value) = part.split_once(": ")?;
+        let value: i64 = value.parse().ok()?;
+        match key {
+            "SpellID" => id["spellId"] = json!(value),
+            "ItemID" => id["itemId"] = json!(value),
+            "Tag" => id["tag"] = json!(value),
+            _ => return None,
+        }
+    }
+    Some(id)
+}
+
+/// The player's casts and auras in the first iteration's combat log, for the page's timeline.
+fn timeline(logs: &str, player_label: &str) -> Value {
+    let prefix = format!("[{player_label}] ");
+    let mut casts = Vec::new();
+    let mut auras: Vec<Value> = Vec::new();
+    let mut open: BTreeMap<String, usize> = BTreeMap::new();
+    let mut last = 0.0f64;
+    for line in logs.lines() {
+        let Some((time, rest)) = line
+            .strip_prefix('[')
+            .and_then(|line| line.split_once("] "))
+        else {
+            continue;
+        };
+        let Ok(t) = time.parse::<f64>() else {
+            continue;
+        };
+        last = last.max(t);
+        let Some(message) = rest.strip_prefix(prefix.as_str()) else {
+            continue;
+        };
+        let named = |id: &Value| {
+            let (name, spell) = action_key(id);
+            (name, spell, id["itemId"].as_i64())
+        };
+        if let Some(rest) = message.strip_prefix("Casting ") {
+            let Some((action, details)) = rest.split_once(" (") else {
+                continue;
+            };
+            let Some(id) = logged_action(action) else {
+                continue;
+            };
+            let field = |label: &str| {
+                details
+                    .split(", ")
+                    .find_map(|part| part.strip_prefix(label))
+                    .map(|value| value.trim_end_matches(')'))
+                    .and_then(go_seconds)
+            };
+            let (name, spell, item) = named(&id);
+            casts.push(json!({
+                "t": t, "name": name, "spell": spell, "item": item,
+                "cast_time": field("Cast Time = ").unwrap_or(0.0),
+                "effective_time": field("Effective Time = ").unwrap_or(0.0),
+            }));
+        } else if let Some(action) = message.strip_prefix("Aura gained: ") {
+            let Some(id) = logged_action(action) else {
+                continue;
+            };
+            if open.contains_key(action) {
+                continue;
+            }
+            let (name, spell, item) = named(&id);
+            open.insert(action.to_string(), auras.len());
+            auras
+                .push(json!({"name": name, "spell": spell, "item": item, "start": t, "end": null}));
+        } else if let Some(action) = message.strip_prefix("Aura faded: ") {
+            if let Some(index) = open.remove(action) {
+                auras[index]["end"] = json!(t);
+            }
+        }
+    }
+    // Auras still up when the fight ends run to the last logged moment.
+    for index in open.into_values() {
+        auras[index]["end"] = json!(last);
+    }
+    json!({"casts": casts, "auras": auras, "end": last})
 }
 
 fn pct(before: f64, after: f64) -> String {
@@ -753,4 +880,46 @@ fn import(args: &[String]) -> Result<(), String> {
         eprintln!("note: {note}");
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn go_durations_read_back() {
+        assert_eq!(go_seconds("0s"), Some(0.0));
+        assert_eq!(go_seconds("2.5s"), Some(2.5));
+        assert_eq!(go_seconds("1m30s"), Some(90.0));
+        assert!((go_seconds("714.285714ms").unwrap() - 0.714285714).abs() < 1e-12);
+        assert_eq!(go_seconds("-1m0s"), Some(-60.0));
+        assert_eq!(go_seconds("soon"), None);
+    }
+
+    #[test]
+    fn timeline_keeps_the_players_lines() {
+        let logs = "\
+[0.00] [Target 1] Aura gained: {SpellID: 20355, Tag: -1}
+[0.00] [mage (#1)] Aura gained: {SpellID: 10494, Tag: -1}
+[0.00] [mage (#1)] Casting {SpellID: 12043} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[0.00] [mage (#1)] Aura gained: {SpellID: 12043}
+[1.50] [mage (#1)] Casting {ItemID: 14152} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[1.50] [mage (#1)] Casting {SpellID: 10181} (Cost = 338.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[4.50] [mage (#1)] Aura faded: {SpellID: 12043}
+[9.00] [Target 1] Aura faded: {SpellID: 20355, Tag: -1}
+";
+        let timeline = timeline(logs, "mage (#1)");
+        let casts = timeline["casts"].as_array().unwrap();
+        assert_eq!(casts.len(), 3);
+        assert_eq!(casts[1]["item"], 14152);
+        assert_eq!(casts[2]["spell"], 10181);
+        assert_eq!(casts[2]["t"], 1.5);
+        assert_eq!(casts[2]["cast_time"], 3.0);
+        assert_eq!(casts[2]["effective_time"], 3.0);
+        let auras = timeline["auras"].as_array().unwrap();
+        assert_eq!(auras.len(), 2);
+        assert_eq!(auras[0]["end"], 9.0);
+        assert_eq!(auras[1]["spell"], 12043);
+        assert_eq!(auras[1]["end"], 4.5);
+    }
 }
