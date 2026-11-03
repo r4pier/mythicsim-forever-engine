@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patchsim</title>
+<style>
+:root {
+  --bg: #0d0f13; --panel: #151820; --panel2: #1b1f29; --line: #2a2f3b; --text: #e6e8ee;
+  --muted: #9097a6; --accent: #f26b1d; --accent-soft: rgba(242,107,29,.14); --good: #3fbf6f;
+  --bad: #e5534b; --link: #4aa3ff; --chip: #222733;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { border-bottom: 1px solid var(--line); padding: 12px 24px; display: flex; align-items: center; gap: 12px; }
+header h1 { font-size: 18px; margin: 0; letter-spacing: .5px; }
+header .tag { border: 1px solid var(--accent); color: var(--accent); border-radius: 4px; font-size: 11px; padding: 0 6px; }
+header .status { margin-left: auto; color: var(--muted); font-size: 12px; }
+main { max-width: 1180px; margin: 24px auto; padding: 0 16px; display: grid; gap: 16px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 20px; }
+.card h2 { font-size: 15px; margin: 0 0 12px; }
+.sub { color: var(--muted); font-size: 12px; }
+.row { display: grid; grid-template-columns: 130px 1fr; gap: 12px; align-items: center; margin: 10px 0; }
+.row > label { color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { background: var(--chip); border: 1px solid var(--line); color: var(--text); border-radius: 4px; padding: 5px 10px; cursor: pointer; font: inherit; }
+.chip:hover { border-color: #444b5c; }
+.chip.on { border-color: var(--accent); background: var(--accent-soft); }
+select, input[type=text], input[type=number], textarea { background: var(--panel2); color: var(--text); border: 1px solid var(--line); border-radius: 4px; padding: 6px 8px; font: inherit; }
+textarea { width: 100%; font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+button.primary { background: var(--accent); color: #fff; border: 0; border-radius: 6px; padding: 10px 28px; font: 600 15px system-ui, sans-serif; cursor: pointer; }
+button.primary:disabled { opacity: .5; cursor: wait; }
+button.small { background: var(--chip); color: var(--text); border: 1px solid var(--line); border-radius: 4px; padding: 4px 10px; cursor: pointer; font: inherit; font-size: 12px; }
+details.section { border: 1px solid var(--line); border-radius: 6px; margin-top: 14px; background: var(--panel); }
+details.section > summary { cursor: pointer; padding: 12px 14px; font-weight: 600; list-style: none; display: flex; align-items: center; gap: 8px; }
+details.section > summary::after { content: "\25BE"; margin-left: auto; color: var(--muted); }
+details.section[open] > summary::after { content: "\25B4"; }
+details.section > .body { padding: 0 14px 14px; }
+h3 { font-size: 13px; margin: 18px 0 8px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px 16px; }
+.field label { display: block; color: var(--muted); font-size: 12px; margin-bottom: 4px; }
+.field select, .field input { width: 100%; }
+.check { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
+.check input { accent-color: var(--accent); width: 16px; height: 16px; }
+.check.off span { color: var(--muted); }
+.more { color: var(--accent); cursor: pointer; font-size: 12px; margin-top: 6px; display: inline-block; }
+/* talents */
+.trees { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tree { background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 10px; }
+.tree header { border: 0; padding: 0 0 8px; display: flex; justify-content: space-between; font-weight: 600; }
+.talent { display: flex; justify-content: space-between; align-items: center; padding: 4px 8px; margin: 2px 0; border: 1px solid transparent; border-radius: 4px; cursor: pointer; user-select: none; font-size: 12.5px; color: var(--muted); }
+.talent:hover { border-color: var(--line); }
+.talent.some { color: var(--text); border-color: #3a3f4d; }
+.talent.max { color: #ffd479; border-color: #7d6a2a; background: rgba(255,212,121,.05); }
+.talent .rk { font-variant-numeric: tabular-nums; font-size: 11px; background: #0008; border-radius: 3px; padding: 0 5px; }
+/* gear */
+.gear { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 28px; }
+.slot { display: grid; grid-template-columns: 80px 1fr auto; gap: 8px; align-items: center; padding: 5px 0; border-bottom: 1px solid #1f2430; }
+.slot .name { color: var(--link); cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.slot .name.empty { color: var(--muted); }
+.slot .ench { font-size: 11px; color: #5fd08a; border: 1px solid #2c6b45; border-radius: 3px; padding: 1px 6px; cursor: pointer; white-space: nowrap; max-width: 210px; overflow: hidden; text-overflow: ellipsis; }
+.slot .ench.none { color: var(--muted); border-color: var(--line); }
+.q2 { color: #1eff00 !important; } .q3 { color: #4aa3ff !important; } .q4 { color: #b56cff !important; } .q5 { color: #ff8000 !important; }
+/* overrides */
+table { border-collapse: collapse; width: 100%; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+th { color: var(--muted); font-weight: 500; font-size: 12px; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.ovr td input[type=text] { width: 100%; }
+.up { color: var(--good); } .down { color: var(--bad); }
+/* results */
+.compare { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.stat { background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 14px; }
+.stat .k { color: var(--muted); font-size: 12px; }
+.stat .v { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.error { background: rgba(229,83,75,.1); border: 1px solid var(--bad); color: #ffb3ae; border-radius: 6px; padding: 10px 12px; white-space: pre-wrap; font-family: ui-monospace, Consolas, monospace; font-size: 12px; }
+.bar { height: 6px; background: var(--accent); border-radius: 3px; }
+/* picker */
+dialog { background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 8px; width: min(560px, 92vw); padding: 16px; }
+dialog::backdrop { background: #000a; }
+.picklist { max-height: 50vh; overflow: auto; margin-top: 10px; }
+.pick { padding: 6px 8px; border-radius: 4px; cursor: pointer; display: flex; justify-content: space-between; gap: 10px; }
+.pick:hover { background: var(--panel2); }
+.footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; }
+@media (max-width: 800px) {
+  .trees, .gear, .grid2, .grid3, .compare { grid-template-columns: 1fr; }
+  .row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<header><h1>PATCHSIM</h1><span class="tag">local</span><span class="sub">MythicSim Forever engine with your patch overrides</span><span class="status" id="status"></span></header>
+<main>
+<section class="card" id="character">
+  <h2>Build a character</h2>
+  <div class="sub">Starts from MythicSim's preset character for the spec. Change anything below, add your patch overrides, then run baseline vs patched.</div>
+  <div class="row"><label>Class</label><div class="chips" id="classes"></div></div>
+  <div class="row"><label>Spec</label><div class="chips" id="specs"></div></div>
+  <div class="row"><label>Race</label><div><select id="race"></select></div></div>
+  <div class="row"><label>Fight length</label><div class="chips" id="lengths"></div></div>
+  <div class="row"><label>Targets</label><div class="chips" id="targets"></div></div>
+
+  <details class="section" open id="talentsSection">
+    <summary>Talents <span class="sub" id="talentSummary"></span></summary>
+    <div class="body">
+      <div class="sub" style="margin-bottom:8px">Click a talent to add a point, right-click to take one off. Talent string:
+        <input type="text" id="talentString" style="width:260px"> <button class="small" id="talentReset">Reset to preset</button> <button class="small" id="talentClear">Clear</button></div>
+      <div class="trees" id="trees"></div>
+    </div>
+  </details>
+
+  <details class="section" open>
+    <summary>Reference gear <span class="sub" id="gearCount"></span></summary>
+    <div class="body">
+      <div class="sub" style="margin-bottom:8px">Choose a slot to change it: search by name or item ID. Click an enchant to change it.</div>
+      <div class="gear" id="gear"></div>
+    </div>
+  </details>
+
+  <details class="section" id="advanced">
+    <summary>Advanced settings</summary>
+    <div class="body">
+      <h3>Fight</h3>
+      <div class="grid3">
+        <div class="field"><label>Fight length (seconds)</label><input type="number" id="duration" min="10"></div>
+        <div class="field"><label>Variation (&plusmn; seconds)</label><input type="number" id="variation" min="0"></div>
+        <div class="field"><label>Iterations</label><select id="iterations">
+          <option value="1000">1,000 (fast)</option><option value="3000">3,000 (standard)</option><option value="10000">10,000 (precise)</option><option value="25000">25,000</option></select></div>
+        <div class="field"><label>Creature type</label><select id="mobType"></select></div>
+        <div class="field"><label>Boss armor</label><input type="number" id="armor" min="0"></div>
+        <div class="field"><label>Boss level</label><input type="number" id="bossLevel" min="1"></div>
+        <div class="field"><label>Distance from the boss (yards)</label><input type="number" id="distance" min="0"></div>
+        <div class="field"><label>Random seed</label><input type="text" id="seed"></div>
+      </div>
+
+      <h3>Rotation</h3>
+      <div class="grid2">
+        <div class="field"><label>Preset</label><select id="rotationMode"><option value="preset">Spec preset rotation</option><option value="custom">Custom APL (imported JSON)</option></select></div>
+        <div class="sub" id="rotationInfo" style="align-self:end"></div>
+      </div>
+      <div id="rotationCustom" style="display:none;margin-top:8px">
+        <div class="sub">Paste the rotation JSON exported from MythicSim's rotation editor (an object with <code>priorityList</code>, and optionally <code>prepullActions</code>). A whole sim request or player export also works: its rotation is taken.</div>
+        <textarea id="rotationJson" rows="10" spellcheck="false"></textarea>
+        <div style="margin-top:6px"><button class="small" id="rotationLoadPreset">Start from the preset rotation</button> <span class="sub" id="rotationCheck"></span></div>
+      </div>
+
+      <h3>Raid buffs</h3><div id="raidBuffs"></div>
+      <h3>Party buffs</h3><div id="partyBuffs"></div>
+      <h3>Blessings and individual buffs</h3><div id="individualBuffs"></div>
+      <h3>Boss debuffs</h3><div id="debuffs"></div>
+
+      <h3>Consumables and extras</h3>
+      <div class="grid2" id="consumes"></div>
+      <h3>Extras</h3>
+      <div class="grid3" id="extras"></div>
+    </div>
+  </details>
+</section>
+
+<section class="card" id="overridesCard">
+  <h2>Patch overrides</h2>
+  <div class="sub">Each line changes one spell (by name, all ranks, or by ID). Values: <code>+10%</code> or <code>-5%</code> scale, <code>x1.2</code> multiplies, <code>+2</code>/<code>-0.5s</code> add, <code>=8s</code> sets. Unticked lines are kept but not applied.</div>
+  <div class="row" style="grid-template-columns:auto 1fr auto"><label>Label</label><input type="text" id="ovrLabel" placeholder="e.g. Patch 1.60.2 notes"><span>
+    <button class="small" id="ovrImport">Import file</button> <button class="small" id="ovrExport">Save file</button> <button class="small" id="ovrRawToggle">Edit JSON</button></span></div>
+  <table class="ovr"><thead><tr><th style="width:30px"></th><th>Spell (name or ID)</th><th style="width:150px">Change</th><th style="width:120px">Value</th><th>Note</th><th style="width:30px"></th></tr></thead><tbody id="ovrRows"></tbody></table>
+  <div style="margin-top:8px"><button class="small" id="ovrAdd">+ Add change</button> <button class="small" id="spellLookup">Look up a spell</button></div>
+  <textarea id="ovrRaw" rows="12" style="display:none;margin-top:10px" spellcheck="false"></textarea>
+  <input type="file" id="ovrFile" accept=".json,application/json" style="display:none">
+</section>
+
+<section class="card">
+  <div class="footer" style="margin-top:0">
+    <div class="sub" id="runInfo">Runs the spec twice in separate processes: once as the engine ships, once with your overrides.</div>
+    <button class="primary" id="run">Run baseline vs patched</button>
+  </div>
+  <div id="results" style="margin-top:16px"></div>
+</section>
+</main>
+
+<dialog id="picker">
+  <div style="display:flex;gap:8px;align-items:center"><strong id="pickerTitle"></strong><button class="small" style="margin-left:auto" onclick="picker.close()">Close</button></div>
+  <input type="text" id="pickerQuery" placeholder="Search by name or ID" style="width:100%;margin-top:10px">
+  <div class="picklist" id="pickerList"></div>
+</dialog>
+
+<script>
+"use strict";
+const $ = (id) => document.getElementById(id);
+const el = (tag, attrs = {}, ...kids) => {
+  const node = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") node.className = v;
+    else if (k.startsWith("on")) node.addEventListener(k.slice(2), v);
+    else if (v !== undefined && v !== null && v !== false) node.setAttribute(k, v === true ? "" : v);
+  }
+  for (const kid of kids.flat()) if (kid !== null && kid !== undefined) node.append(kid.nodeType ? kid : String(kid));
+  return node;
+};
+const api = async (path, body) => {
+  const res = await fetch(path, body === undefined ? {} : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const data = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
+  if (!res.ok || (data && data.error && !Array.isArray(data))) throw new Error(data.error || `HTTP ${res.status}`);
+  return data;
+};
+const store = {
+  get(key, fallback) { try { const v = localStorage.getItem("patchsim." + key); return v === null ? fallback : JSON.parse(v); } catch { return fallback; } },
+  set(key, value) { try { localStorage.setItem("patchsim." + key, JSON.stringify(value)); } catch {} },
+};
+const humanize = (name) => name.replace(/^(Class|Race|MobType|TristateEffect)/, "").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/^./, (c) => c.toUpperCase());
+const fmt = (n, d = 1) => (n === undefined || n === null || isNaN(n)) ? "-" : Number(n).toLocaleString(undefined, { minimumFractionDigits: d, maximumFractionDigits: d });
+
+const CLASSES = ["ClassDruid", "ClassHunter", "ClassMage", "ClassPaladin", "ClassPriest", "ClassRogue", "ClassShaman", "ClassWarlock", "ClassWarrior"];
+const CLASS_COLORS = { ClassDruid: "#ff7d0a", ClassHunter: "#abd473", ClassMage: "#69ccf0", ClassPaladin: "#f58cba", ClassPriest: "#ffffff", ClassRogue: "#fff569", ClassShaman: "#0070de", ClassWarlock: "#9482c9", ClassWarrior: "#c79c6e" };
+const SLOTS = [
+  ["Head", "ItemTypeHead"], ["Neck", "ItemTypeNeck"], ["Shoulders", "ItemTypeShoulder"], ["Back", "ItemTypeBack"],
+  ["Chest", "ItemTypeChest"], ["Wrists", "ItemTypeWrist"], ["Hands", "ItemTypeHands"], ["Waist", "ItemTypeWaist"],
+  ["Legs", "ItemTypeLegs"], ["Feet", "ItemTypeFeet"], ["Ring 1", "ItemTypeFinger"], ["Ring 2", "ItemTypeFinger"],
+  ["Trinket 1", "ItemTypeTrinket"], ["Trinket 2", "ItemTypeTrinket"], ["Main hand", "ItemTypeWeapon"], ["Off hand", "ItemTypeWeapon"], ["Ranged", "ItemTypeRanged"],
+];
+// The builder's common toggles, shown first; the rest of each message's fields sit under "more".
+const COMMON = {
+  raidBuffs: ["arcaneBrilliance", "giftOfTheWild", "prayerOfFortitude", "prayerOfSpirit", "fireResistanceAura", "fireResistanceTotem"],
+  partyBuffs: ["battleShout", "manaSpringTotem", "graceOfAirTotem", "leaderOfThePack", "moonkinAura", "strengthOfEarthTotem", "trueshotAura", "windfuryTotem", "devotionAura"],
+  individualBuffs: ["greaterBlessingOfKings", "greaterBlessingOfMight", "greaterBlessingOfWisdom", "greaterBlessingOfSalvation"],
+  debuffs: ["curseOfElements", "curseOfRecklessness", "exposeArmor", "faerieFire", "giftOfArthas", "huntersMark", "insectSwarm", "judgementOfTheCrusader", "judgementOfWisdom", "sunderArmor"],
+};
+const CONSUMES = [
+  ["potId", "Potion", "ConsumableTypePotion"], ["foodId", "Food", "ConsumableTypeFood"],
+  ["flaskId", "Flask", "ConsumableTypeFlask"], ["schoolElixirId", "School elixir", "ConsumableTypeSchoolElixir"],
+  ["battleElixirId", "Battle elixir", "ConsumableTypeBattleElixir"], ["guardianElixirId", "Guardian elixir", "ConsumableTypeGuardianElixir"],
+  ["strengthBuffId", "Strength elixir", "ConsumableTypeStrengthBuff"], ["spellPowerElixirId", "Spell power elixir", "ConsumableTypeSpellPowerElixir"],
+  ["attackPowerBuffId", "Attack power", "ConsumableTypeAttackPowerBuff"], ["defenseElixirId", "Armor elixir", "ConsumableTypeDefenseElixir"],
+  ["zanzaId", "Zanza", "ConsumableTypeZanza"], ["alcoholId", "Alcohol", "ConsumableTypeAlcohol"],
+  ["conjuredId", "Conjured", null],
+];
+const CHANGE_KINDS = [
+  ["damage", "Damage"], ["healing", "Healing"], ["coefficient", "SP/AP coefficient"], ["cooldown", "Cooldown"],
+  ["cost", "Cost"], ["cast_time", "Cast time"], ["curve", "Talent ranks (curve)"], ["row", "Client row field"], ["prepared", "Prepared field"],
+];
+
+const state = {
+  catalog: null, presets: [], presetName: null, preset: null, request: null,
+  itemNames: new Map(), overrides: store.get("overrides", { label: "", changes: [] }),
+};
+
+// ---------- request helpers ----------
+const player = () => state.request.raid.parties[0].players[0];
+const target0 = () => state.request.encounter.targets[0];
+const classOf = (preset) => preset.class || "";
+
+function setStatus(text) { $("status").textContent = text; }
+
+async function init() {
+  setStatus("Loading...");
+  try {
+    [state.catalog, state.presets] = await Promise.all([api("/api/catalog"), api("/api/presets")]);
+  } catch (err) {
+    $("results").replaceChildren(el("div", { class: "error" }, "Could not load presets: " + err.message));
+    setStatus("");
+    return;
+  }
+  renderClasses();
+  const last = store.get("preset", null);
+  const first = state.presets.find((p) => p.name === last) || state.presets.find((p) => classOf(p) === "ClassMage") || state.presets[0];
+  if (first) await loadPreset(first.name);
+  renderOverrides();
+  setStatus(`${state.presets.length} presets`);
+}
+
+function renderClasses() {
+  const box = $("classes");
+  box.replaceChildren(...CLASSES.filter((c) => state.presets.some((p) => classOf(p) === c)).map((cls) =>
+    el("button", { class: "chip" + (state.preset && classOf(state.preset) === cls ? " on" : ""), style: `color:${CLASS_COLORS[cls]}`,
+      onclick: () => { const p = state.presets.find((x) => classOf(x) === cls); if (p) loadPreset(p.name); } }, humanize(cls))));
+}
+
+function renderSpecs() {
+  const cls = classOf(state.preset);
+  $("specs").replaceChildren(...state.presets.filter((p) => classOf(p) === cls).map((p) =>
+    el("button", { class: "chip" + (p.name === state.presetName ? " on" : ""), onclick: () => loadPreset(p.name) }, humanize(p.name.replace(/-/g, " ")))));
+}
+
+async function loadPreset(name) {
+  setStatus("Loading " + name + "...");
+  const data = await api("/api/preset?name=" + encodeURIComponent(name));
+  state.presetName = name;
+  state.preset = state.presets.find((p) => p.name === name);
+  state.request = data.request;
+  state.presetRotation = JSON.parse(JSON.stringify(player().rotation || {}));
+  state.presetTalents = player().talentsString || "";
+  store.set("preset", name);
+  state.request.simOptions = state.request.simOptions || {};
+  state.request.simOptions.iterations = Number(store.get("iterations", 3000));
+  // Restore a custom rotation saved for this spec.
+  const custom = store.get("rotation." + name, null);
+  $("rotationMode").value = custom ? "custom" : "preset";
+  $("rotationJson").value = custom ? JSON.stringify(custom, null, 1) : "";
+  await resolveItemNames();
+  renderAll();
+  setStatus(name);
+}
+
+function renderAll() {
+  renderClasses(); renderSpecs(); renderRace(); renderFight(); renderTalents(); renderGear(); renderAdvanced();
+}
+
+function renderRace() {
+  const races = (state.catalog.races[state.presetName] || []).slice();
+  const current = player().race;
+  if (current && !races.includes(current)) races.unshift(current);
+  $("race").replaceChildren(...races.map((r) => el("option", { value: r, selected: r === current }, humanize(r))));
+  $("race").onchange = () => { player().race = $("race").value; };
+}
+
+function renderFight() {
+  const enc = state.request.encounter;
+  $("lengths").replaceChildren(...[60, 120, 180, 300].map((s) =>
+    el("button", { class: "chip" + (Number(enc.duration) === s ? " on" : ""), onclick: () => { enc.duration = s; renderFight(); renderAdvanced(); } }, `${s / 60} min`)));
+  const count = enc.targets.length;
+  $("targets").replaceChildren(...[1, 2, 3, 4, 5].map((n) =>
+    el("button", { class: "chip" + (count === n ? " on" : ""), onclick: () => setTargets(n) }, n)));
+}
+
+function setTargets(n) {
+  const enc = state.request.encounter;
+  const base = enc.targets[0];
+  enc.targets = Array.from({ length: n }, (_, i) => i < enc.targets.length ? enc.targets[i] : { ...JSON.parse(JSON.stringify(base)), name: `Target ${i + 1}` });
+  renderFight();
+}
+
+// ---------- talents ----------
+function talentTrees() {
+  const cls = classOf(state.preset).replace("Class", "").toLowerCase();
+  return state.catalog.talents[cls] || [];
+}
+
+function parseTalents(text, trees) {
+  const parts = (text || "").split("-");
+  return trees.map((tree, t) => tree.talents.map((_, i) => Number((parts[t] || "")[i]) || 0));
+}
+
+function talentString(points) {
+  const trees = points.map((tree) => tree.join("").replace(/0+$/, ""));
+  while (trees.length && trees[trees.length - 1] === "") trees.pop();
+  return trees.join("-");
+}
+
+function renderTalents() {
+  const trees = talentTrees();
+  const points = parseTalents(player().talentsString, trees);
+  const totals = points.map((t) => t.reduce((a, b) => a + b, 0));
+  const total = totals.reduce((a, b) => a + b, 0);
+  $("talentSummary").textContent = `${total}/51 points, ${totals.join("/")}`;
+  $("talentString").value = player().talentsString || "";
+  const change = (t, i, delta) => {
+    const max = trees[t].talents[i].max;
+    const next = points[t][i] + delta;
+    if (next < 0 || next > max || (delta > 0 && total >= 51)) return;
+    points[t][i] = next;
+    player().talentsString = talentString(points);
+    renderTalents();
+  };
+  $("trees").replaceChildren(...trees.map((tree, t) => el("div", { class: "tree" },
+    el("header", {}, el("span", {}, tree.name), el("span", { class: "sub" }, totals[t])),
+    ...tree.talents.map((talent, i) => {
+      const rank = points[t][i];
+      return el("div", { class: "talent" + (rank ? (rank >= talent.max ? " max" : " some") : ""), title: talent.field,
+        onclick: () => change(t, i, 1), oncontextmenu: (e) => { e.preventDefault(); change(t, i, -1); } },
+        el("span", {}, talent.name), el("span", { class: "rk" }, `${rank}/${talent.max}`));
+    }))));
+}
+$("talentString").addEventListener("change", () => { player().talentsString = $("talentString").value.trim(); renderTalents(); });
+$("talentReset").addEventListener("click", () => { player().talentsString = state.presetTalents; renderTalents(); });
+$("talentClear").addEventListener("click", () => { player().talentsString = ""; renderTalents(); });
+
+// ---------- gear ----------
+const enchantName = (id) => { const e = state.catalog.enchants.find((x) => x.id === id); return e ? e.name : `Enchant ${id}`; };
+
+async function resolveItemNames() {
+  const ids = (player().equipment?.items || []).map((i) => i.id).filter((id) => id && !state.itemNames.has(id));
+  if (!ids.length) return;
+  const found = await api("/api/items?q=" + encodeURIComponent("ids:" + ids.join(",")));
+  for (const item of found) state.itemNames.set(item.id, item);
+}
+
+// The request lists items in any order and the engine slots each by its type; the page shows
+// them in slot order, rings, trinkets and weapons filling their first then second slot.
+function slotted() {
+  const items = (player().equipment?.items || []).filter((i) => i && i.id);
+  const slots = SLOTS.map(() => null);
+  for (const item of items) {
+    const info = state.itemNames.get(item.id) || {};
+    let type = info.type;
+    let candidates = SLOTS.map((s, i) => (s[1] === type ? i : -1)).filter((i) => i >= 0);
+    if (type === "ItemTypeWeapon") candidates = info.hand_type === "HandTypeOffHand" ? [15] : [14, 15];
+    if (!type) candidates = [slots.indexOf(null)];
+    const free = candidates.find((i) => slots[i] === null);
+    if (free !== undefined && free >= 0) slots[free] = item;
+  }
+  return slots;
+}
+
+function writeSlots(slots) {
+  player().equipment = { items: slots.filter(Boolean) };
+}
+
+function renderGear() {
+  const slots = slotted();
+  $("gearCount").textContent = `· ${slots.filter(Boolean).length} items equipped`;
+  $("gear").replaceChildren(...SLOTS.map(([label, type], index) => {
+    const item = slots[index];
+    const info = item ? state.itemNames.get(item.id) : null;
+    const name = item ? (info ? info.name : `Item ${item.id}`) : "Empty";
+    return el("div", { class: "slot" },
+      el("span", { class: "sub" }, label),
+      el("span", { class: "name" + (item ? (info && info.quality ? " q" + qualityNumber(info.quality) : "") : " empty"), title: item ? `Item ${item.id}` : "",
+        onclick: () => pickItem(index, type) }, name),
+      item ? el("span", { class: "ench" + (item.enchant ? "" : " none"), onclick: () => pickEnchant(index, type) }, item.enchant ? "+ " + enchantName(item.enchant) : "+ enchant") : el("span"));
+  }));
+}
+const qualityNumber = (q) => ({ ItemQualityUncommon: 2, ItemQualityRare: 3, ItemQualityEpic: 4, ItemQualityLegendary: 5 })[q] || 1;
+
+const picker = $("picker");
+function openPicker(title, search) {
+  $("pickerTitle").textContent = title;
+  $("pickerQuery").value = "";
+  $("pickerList").replaceChildren();
+  let timer;
+  $("pickerQuery").oninput = () => { clearTimeout(timer); timer = setTimeout(() => search($("pickerQuery").value), 180); };
+  search("");
+  picker.showModal();
+  $("pickerQuery").focus();
+}
+
+function pickItem(index, type) {
+  openPicker(`${SLOTS[index][0]}: choose an item`, async (q) => {
+    const list = [el("div", { class: "pick", onclick: () => { const s = slotted(); s[index] = null; writeSlots(s); picker.close(); renderGear(); } }, el("span", { class: "sub" }, "Empty this slot"))];
+    if (q.trim()) {
+      const found = await api(`/api/items?slot=${type}&q=${encodeURIComponent(q)}`).catch(() => []);
+      for (const item of found) list.push(el("div", { class: "pick", onclick: () => {
+        state.itemNames.set(item.id, item);
+        const s = slotted(); const old = s[index];
+        s[index] = { id: item.id, ...(old && old.enchant ? { enchant: old.enchant } : {}) };
+        writeSlots(s); picker.close(); renderGear();
+      } }, el("span", { class: item.quality ? "q" + qualityNumber(item.quality) : "" }, item.name), el("span", { class: "sub" }, `${item.id}${item.ilvl ? " · ilvl " + item.ilvl : ""}`)));
+    } else list.push(el("div", { class: "sub", style: "padding:8px" }, "Type a name or an item ID."));
+    $("pickerList").replaceChildren(...list);
+  });
+}
+
+function pickEnchant(index, type) {
+  const fits = (e) => e.type === type || (type === "ItemTypeWeapon" && e.type === "ItemTypeWeapon") || !e.type;
+  openPicker(`${SLOTS[index][0]}: choose an enchant`, (q) => {
+    const needle = q.trim().toLowerCase();
+    const list = [el("div", { class: "pick", onclick: () => { const s = slotted(); delete s[index].enchant; writeSlots(s); picker.close(); renderGear(); } }, el("span", { class: "sub" }, "No enchant"))];
+    for (const e of state.catalog.enchants.filter((e) => fits(e) && (!needle || e.name.toLowerCase().includes(needle) || String(e.id) === needle)).slice(0, 80)) {
+      list.push(el("div", { class: "pick", onclick: () => { const s = slotted(); s[index].enchant = e.id; writeSlots(s); picker.close(); renderGear(); } }, el("span", {}, e.name), el("span", { class: "sub" }, e.id)));
+    }
+    $("pickerList").replaceChildren(...list);
+  });
+}
+
+// ---------- advanced ----------
+function messageFields(name) { return (state.catalog.messages[name] || { fields: [] }).fields; }
+
+function renderToggleGroup(boxId, messageName, values, common) {
+  const fields = messageFields(messageName).filter((f) => f.kind === "bool" || f.type === "proto.TristateEffect" || f.kind === "int32" || f.kind === "double");
+  const first = fields.filter((f) => common.includes(f.json_name)).sort((a, b) => common.indexOf(a.json_name) - common.indexOf(b.json_name));
+  const rest = fields.filter((f) => !common.includes(f.json_name));
+  const item = (f) => {
+    const key = f.json_name;
+    if (f.kind === "bool") {
+      const input = el("input", { type: "checkbox", checked: !!values[key], onchange: (e) => { if (e.target.checked) values[key] = true; else delete values[key]; wrap.classList.toggle("off", !e.target.checked); } });
+      const wrap = el("label", { class: "check" + (values[key] ? "" : " off") }, input, el("span", {}, humanize(key)));
+      return wrap;
+    }
+    if (f.type === "proto.TristateEffect") {
+      const sel = el("select", { onchange: (e) => { if (e.target.value === "TristateEffectMissing") delete values[key]; else values[key] = e.target.value; } },
+        ...["TristateEffectMissing", "TristateEffectRegular", "TristateEffectImproved"].map((v) => el("option", { value: v, selected: (values[key] || "TristateEffectMissing") === v }, v === "TristateEffectMissing" ? "Off" : humanize(v))));
+      return el("label", { class: "check" }, el("span", { style: "min-width:150px" }, humanize(key)), sel);
+    }
+    const input = el("input", { type: "number", value: values[key] ?? "", style: "width:80px", onchange: (e) => { if (e.target.value === "" || Number(e.target.value) === 0) delete values[key]; else values[key] = Number(e.target.value); } });
+    return el("label", { class: "check" }, el("span", { style: "min-width:150px" }, humanize(key)), input);
+  };
+  const more = el("div", { class: "grid3", style: "display:none;margin-top:4px" }, ...rest.map(item));
+  $(boxId).replaceChildren(el("div", { class: "grid3" }, ...first.map(item)),
+    rest.length ? el("span", { class: "more", onclick: (e) => { const open = more.style.display === "none"; more.style.display = open ? "grid" : "none"; e.target.textContent = open ? "Show fewer" : `${rest.length} more`; } }, `${rest.length} more`) : null, more);
+}
+
+function renderAdvanced() {
+  const req = state.request, enc = req.encounter, tgt = target0(), p = player();
+  const raid = req.raid; const party = raid.parties[0];
+  raid.buffs = raid.buffs || {}; raid.debuffs = raid.debuffs || {}; party.buffs = party.buffs || {}; p.buffs = p.buffs || {}; p.consumables = p.consumables || {};
+  const bindNum = (id, get, set) => { $(id).value = get() ?? ""; $(id).onchange = () => set($(id).value === "" ? undefined : Number($(id).value)); };
+  bindNum("duration", () => enc.duration, (v) => { enc.duration = v || 120; renderFight(); });
+  bindNum("variation", () => enc.durationVariation, (v) => { enc.durationVariation = v || 0; });
+  $("iterations").value = String(req.simOptions.iterations || 3000);
+  if (![...$("iterations").options].some((o) => o.value === $("iterations").value)) $("iterations").append(el("option", { value: req.simOptions.iterations, selected: true }, req.simOptions.iterations));
+  $("iterations").onchange = () => { req.simOptions.iterations = Number($("iterations").value); store.set("iterations", req.simOptions.iterations); };
+  $("mobType").replaceChildren(...state.catalog.enums["proto.MobType"].map((m) => el("option", { value: m.name, selected: (tgt.mobType || "MobTypeUnknown") === m.name }, m.name === "MobTypeUnknown" ? "None (standard boss)" : humanize(m.name))));
+  $("mobType").onchange = () => { for (const t of enc.targets) { if ($("mobType").value === "MobTypeUnknown") delete t.mobType; else t.mobType = $("mobType").value; } };
+  const ARMOR = 30; // proto.Stat StatArmor
+  bindNum("armor", () => (tgt.stats || [])[ARMOR], (v) => { for (const t of enc.targets) { t.stats = t.stats || []; while (t.stats.length <= ARMOR) t.stats.push(0); t.stats[ARMOR] = v || 0; } });
+  bindNum("bossLevel", () => tgt.level, (v) => { for (const t of enc.targets) t.level = v || 63; });
+  bindNum("distance", () => p.distanceFromTarget, (v) => { if (v === undefined) delete p.distanceFromTarget; else p.distanceFromTarget = v; });
+  $("seed").value = req.simOptions.randomSeed ?? "";
+  $("seed").onchange = () => { const v = $("seed").value.trim(); if (v) req.simOptions.randomSeed = v; else delete req.simOptions.randomSeed; };
+
+  renderRotation();
+  renderToggleGroup("raidBuffs", "proto.RaidBuffs", raid.buffs, COMMON.raidBuffs);
+  renderToggleGroup("partyBuffs", "proto.PartyBuffs", party.buffs, COMMON.partyBuffs);
+  renderToggleGroup("individualBuffs", "proto.IndividualBuffs", p.buffs, COMMON.individualBuffs);
+  renderToggleGroup("debuffs", "proto.Debuffs", raid.debuffs, COMMON.debuffs);
+  renderConsumes();
+}
+
+function renderConsumes() {
+  const c = player().consumables;
+  const byType = (type) => state.catalog.consumables.filter((x) => type ? x.type === type : !x.type || x.type === "ConsumableTypeOther");
+  const boxes = CONSUMES.map(([key, label, type]) => {
+    const options = byType(type);
+    const current = c[key];
+    const sel = el("select", { onchange: (e) => {
+      const v = Number(e.target.value);
+      if (!v) delete c[key]; else c[key] = v;
+      if (key === "potId") { if (v) c.potions = [v]; else delete c.potions; }
+      if (key === "conjuredId") { if (v) c.conjuredItems = [v]; else delete c.conjuredItems; }
+    } }, el("option", { value: 0 }, "None"),
+      ...options.map((o) => el("option", { value: o.id, selected: o.id === current }, o.name)),
+      current && !options.some((o) => o.id === current) ? el("option", { value: current, selected: true }, `Item ${current}`) : null);
+    return el("div", { class: "field" }, el("label", {}, label), sel);
+  });
+  const imbue = (key, label) => {
+    const input = el("input", { type: "number", value: c[key] || "", placeholder: "item ID", onchange: (e) => { const v = Number(e.target.value); if (v) c[key] = v; else delete c[key]; showName(); } });
+    const name = el("span", { class: "sub" });
+    const showName = async () => {
+      const id = c[key]; if (!id) { name.textContent = ""; return; }
+      if (!state.itemNames.has(id)) { const found = await api("/api/items?q=ids:" + id).catch(() => []); for (const i of found) state.itemNames.set(i.id, i); }
+      name.textContent = state.itemNames.get(id)?.name || "";
+    };
+    showName();
+    return el("div", { class: "field" }, el("label", {}, label, " ", name), input);
+  };
+  $("consumes").replaceChildren(...boxes, imbue("mhImbueId", "Main hand oil or stone"), imbue("ohImbueId", "Off hand oil or stone"), imbue("explosiveId", "Explosive"));
+  const enc = state.request.encounter;
+  const p = player();
+  const check = (label, get, set) => { const input = el("input", { type: "checkbox", checked: !!get(), onchange: (e) => set(e.target.checked) }); return el("label", { class: "check" }, input, el("span", {}, label)); };
+  const bools = ["dragonbreathChili", "goblinSapper", "boglingRoot", "scrollAgi", "scrollStr", "scrollInt", "scrollSpi", "scrollArm"]
+    .map((k) => check(humanize(k), () => c[k], (v) => { if (v) c[k] = true; else delete c[k]; }));
+  $("extras").replaceChildren(
+    check("Power Infusion (from a raid priest)", () => p.buffs.powerInfusions, (v) => { if (v) p.buffs.powerInfusions = 1; else delete p.buffs.powerInfusions; }),
+    check("Innervate (from a raid druid)", () => p.buffs.innervates, (v) => { if (v) p.buffs.innervates = 1; else delete p.buffs.innervates; }),
+    check("8% hit cap against the boss (no extra 1% hit suppression)", () => enc.noHitSuppression, (v) => { if (v) enc.noHitSuppression = true; else delete enc.noHitSuppression; }),
+    ...bools);
+}
+
+// ---------- rotation ----------
+function renderRotation() {
+  const custom = $("rotationMode").value === "custom";
+  $("rotationCustom").style.display = custom ? "block" : "none";
+  const n = (state.presetRotation.priorityList || []).length;
+  $("rotationInfo").textContent = custom ? "Your APL replaces the preset for this spec (remembered in this browser)." : `${n} actions in the preset priority list.`;
+}
+$("rotationMode").addEventListener("change", () => { renderRotation(); if ($("rotationMode").value === "preset") store.set("rotation." + state.presetName, null); });
+$("rotationLoadPreset").addEventListener("click", () => { $("rotationJson").value = JSON.stringify(state.presetRotation, null, 1); checkRotation(); });
+$("rotationJson").addEventListener("input", () => checkRotation());
+
+// Accepts a rotation, a player, or a whole request, and returns the rotation object.
+function extractRotation(value) {
+  if (!value || typeof value !== "object") return null;
+  if (Array.isArray(value.priorityList) || Array.isArray(value.prepullActions)) return { type: "TypeAPL", ...value };
+  if (value.rotation) return extractRotation(value.rotation);
+  if (value.player) return extractRotation(value.player);
+  if (value.raid) return extractRotation(value.raid?.parties?.[0]?.players?.[0]);
+  return null;
+}
+
+function checkRotation() {
+  const text = $("rotationJson").value.trim();
+  if (!text) { $("rotationCheck").textContent = ""; return null; }
+  try {
+    const rotation = extractRotation(JSON.parse(text));
+    if (!rotation) throw new Error("no priorityList found");
+    $("rotationCheck").textContent = `OK: ${(rotation.priorityList || []).length} actions, ${(rotation.prepullActions || []).length} prepull`;
+    store.set("rotation." + state.presetName, rotation);
+    return rotation;
+  } catch (err) {
+    $("rotationCheck").textContent = "Not valid: " + err.message;
+    return null;
+  }
+}
+
+// ---------- overrides ----------
+function renderOverrides() {
+  const o = state.overrides;
+  $("ovrLabel").value = o.label || "";
+  $("ovrLabel").oninput = () => { o.label = $("ovrLabel").value; saveOverrides(); };
+  $("ovrRows").replaceChildren(...o.changes.map((change, index) => {
+    const kind = CHANGE_KINDS.find(([k]) => k in change)?.[0] || "damage";
+    const kindSel = el("select", { onchange: (e) => {
+      const value = change[kind]; delete change[kind];
+      if (kind === "row" || kind === "prepared") { delete change.value; }
+      if (kind === "curve") { delete change.value; }
+      const next = e.target.value;
+      if (next === "row" || next === "prepared") { change[next] = ""; change.value = value ?? ""; }
+      else if (next === "curve") { change.curve = true; change.value = value ?? ""; }
+      else change[next] = typeof value === "string" ? value : "";
+      saveOverrides(); renderOverrides();
+    } }, ...CHANGE_KINDS.map(([k, label]) => el("option", { value: k, selected: k === kind }, label)));
+    const spell = el("input", { type: "text", value: Array.isArray(change.spell) ? change.spell.join(",") : (change.spell ?? ""), placeholder: "Fireball or 25306",
+      onchange: (e) => { change.spell = parseSpell(e.target.value); saveOverrides(); } });
+    const valueKey = (kind === "row" || kind === "prepared" || kind === "curve") ? "value" : kind;
+    const pathInput = (kind === "row" || kind === "prepared") ? el("input", { type: "text", value: change[kind] || "", placeholder: kind === "row" ? "Effects/0/BasePoints" : "damage_multiplier", style: "margin-top:4px",
+      onchange: (e) => { change[kind] = e.target.value; saveOverrides(); } }) : null;
+    const curveInput = kind === "curve" ? el("input", { type: "text", value: change.curve === true ? "" : change.curve, placeholder: "effect index (blank = all)", style: "margin-top:4px",
+      onchange: (e) => { change.curve = e.target.value.trim() === "" ? true : Number(e.target.value); saveOverrides(); } }) : null;
+    const rawValue = change[valueKey];
+    const value = el("input", { type: "text", value: rawValue === undefined ? "" : (typeof rawValue === "string" ? rawValue : JSON.stringify(rawValue)), placeholder: kind === "cooldown" || kind === "cast_time" ? "-2s" : "+10%",
+      onchange: (e) => { change[valueKey] = parseValue(e.target.value); saveOverrides(); } });
+    const note = el("input", { type: "text", value: change.note || "", placeholder: "patch note text", onchange: (e) => { if (e.target.value) change.note = e.target.value; else delete change.note; saveOverrides(); } });
+    const enabled = el("input", { type: "checkbox", checked: !change.disabled, onchange: (e) => { if (e.target.checked) delete change.disabled; else change.disabled = true; saveOverrides(); } });
+    return el("tr", {}, el("td", {}, enabled), el("td", {}, spell), el("td", {}, kindSel, pathInput, curveInput), el("td", {}, value), el("td", {}, note),
+      el("td", {}, el("button", { class: "small", title: "Remove", onclick: () => { o.changes.splice(index, 1); saveOverrides(); renderOverrides(); } }, "×")));
+  }));
+  if (!o.changes.length) $("ovrRows").append(el("tr", {}, el("td", { colspan: 6, class: "sub" }, "No changes yet. Add one, or import a patch-overrides JSON file.")));
+  $("ovrRaw").value = JSON.stringify(o, null, 1);
+}
+const parseSpell = (text) => {
+  const parts = text.split(",").map((s) => s.trim()).filter(Boolean);
+  const nums = parts.map(Number);
+  if (parts.length > 1 && nums.every((n) => Number.isInteger(n))) return nums;
+  if (parts.length === 1 && Number.isInteger(nums[0])) return nums[0];
+  return text.trim();
+};
+const parseValue = (text) => {
+  const t = text.trim();
+  // Bare JSON (a number, a list of talent ranks) sets the value; anything else is patchsim's text form.
+  if (/^[\[{]/.test(t) || /^-?\d+(\.\d+)?$/.test(t)) { try { return JSON.parse(t); } catch { return t; } }
+  return t;
+};
+function saveOverrides() { store.set("overrides", state.overrides); $("ovrRaw").value = JSON.stringify(state.overrides, null, 1); }
+$("ovrAdd").addEventListener("click", () => { state.overrides.changes.push({ spell: "", damage: "+10%" }); saveOverrides(); renderOverrides(); });
+$("ovrRawToggle").addEventListener("click", () => {
+  const raw = $("ovrRaw");
+  if (raw.style.display === "none") { raw.style.display = "block"; $("ovrRawToggle").textContent = "Apply JSON"; return; }
+  try { const parsed = JSON.parse(raw.value); if (!Array.isArray(parsed.changes)) throw new Error("needs a changes list"); state.overrides = parsed; saveOverrides(); renderOverrides(); raw.style.display = "none"; $("ovrRawToggle").textContent = "Edit JSON"; }
+  catch (err) { alert("Overrides JSON is not valid: " + err.message); }
+});
+$("ovrImport").addEventListener("click", () => $("ovrFile").click());
+$("ovrFile").addEventListener("change", async () => {
+  const file = $("ovrFile").files[0]; if (!file) return;
+  try { const parsed = JSON.parse(await file.text()); if (!Array.isArray(parsed.changes)) throw new Error("needs a changes list"); state.overrides = parsed; saveOverrides(); renderOverrides(); }
+  catch (err) { alert("Could not read " + file.name + ": " + err.message); }
+  $("ovrFile").value = "";
+});
+$("ovrExport").addEventListener("click", () => {
+  const blob = new Blob([JSON.stringify(state.overrides, null, 2) + "\n"], { type: "application/json" });
+  const a = el("a", { href: URL.createObjectURL(blob), download: (state.overrides.label || "patch-overrides").replace(/[^\w.-]+/g, "-") + ".json" });
+  document.body.append(a); a.click(); a.remove();
+});
+$("spellLookup").addEventListener("click", () => openPicker("Look up a spell", async (q) => {
+  if (!q.trim()) { $("pickerList").replaceChildren(el("div", { class: "sub", style: "padding:8px" }, "Type a spell name or ID. Click a result to add a change for it.")); return; }
+  const rows = await api("/api/spells?q=" + encodeURIComponent(q)).catch((err) => [{ error: err.message }]);
+  $("pickerList").replaceChildren(...rows.slice(0, 80).map((row) => row.error ? el("div", { class: "error" }, row.error) :
+    el("div", { class: "pick", onclick: () => { state.overrides.changes.push({ spell: row.Name, damage: "+10%" }); saveOverrides(); renderOverrides(); picker.close(); } },
+      el("span", {}, `${row.Name}${row.Rank ? " (" + row.Rank + ")" : ""}`),
+      el("span", { class: "sub" }, `${row.ID}${row.Effects ? " · " + row.Effects.filter((e) => e.BasePoints || e.SPCoef).map((e) => `${e.BasePoints ?? ""}${e.SPCoef ? " sp " + e.SPCoef : ""}`).join(" / ") : ""}${row.TalentCurve ? " · talent " + JSON.stringify(row.TalentCurve) : ""}`))));
+}));
+
+// ---------- run ----------
+function buildRequest() {
+  const req = JSON.parse(JSON.stringify(state.request));
+  const p = req.raid.parties[0].players[0];
+  if ($("rotationMode").value === "custom") {
+    const rotation = checkRotation();
+    if (!rotation) throw new Error("The custom rotation JSON is not valid. Fix it or switch Rotation back to the spec preset.");
+    p.rotation = rotation;
+  }
+  delete req.simOptions.debugFirstIteration;
+  return req;
+}
+
+function overridesForRun() {
+  const o = JSON.parse(JSON.stringify(state.overrides));
+  o.changes = o.changes.filter((c) => c.spell !== "" && c.spell !== undefined);
+  return o;
+}
+
+$("run").addEventListener("click", async () => {
+  let request;
+  try { request = buildRequest(); } catch (err) { $("results").replaceChildren(el("div", { class: "error" }, err.message)); return; }
+  $("run").disabled = true;
+  const started = performance.now();
+  $("results").replaceChildren(el("div", { class: "sub" }, `Simming ${state.presetName} at ${request.simOptions.iterations.toLocaleString()} iterations...`));
+  try {
+    const result = await api("/api/run", { request, overrides: overridesForRun() });
+    renderResults(result, (performance.now() - started) / 1000);
+  } catch (err) {
+    $("results").replaceChildren(el("div", { class: "error" }, err.message));
+  } finally { $("run").disabled = false; }
+});
+
+function delta(a, b) {
+  if (!a) return el("span", { class: "sub" }, "-");
+  const pct = (b - a) / a * 100;
+  const cls = Math.abs(pct) < 0.05 ? "sub" : pct > 0 ? "up" : "down";
+  return el("span", { class: cls }, `${pct > 0 ? "+" : ""}${fmt(pct, 2)}%`);
+}
+
+function renderResults(result, seconds) {
+  const b = result.baseline || {}, p = result.patched || {};
+  const healer = (b.hps || 0) > (b.dps || 0);
+  const metric = healer ? "hps" : "dps";
+  const M = metric.toUpperCase();
+  const diff = (p[metric] || 0) - (b[metric] || 0);
+  const out = [];
+  out.push(el("div", { class: "compare" },
+    el("div", { class: "stat" }, el("div", { class: "k" }, `Baseline ${M}`), el("div", { class: "v" }, fmt(b[metric])), el("div", { class: "sub" }, `± ${fmt(b[metric + "_stdev"] ?? b.dps_stdev)} stdev`)),
+    el("div", { class: "stat" }, el("div", { class: "k" }, `Patched ${M}`), el("div", { class: "v" }, fmt(p[metric])), el("div", { class: "sub" }, `± ${fmt(p[metric + "_stdev"] ?? p.dps_stdev)} stdev`)),
+    el("div", { class: "stat" }, el("div", { class: "k" }, "Change"), el("div", { class: "v " + (diff > 0 ? "up" : diff < 0 ? "down" : "") }, `${diff > 0 ? "+" : ""}${fmt(diff)}`), el("div", {}, delta(b[metric], p[metric])))));
+  const extras = [["DPS", "dps"], ["HPS", "hps"], ["TPS", "tps"], ["DTPS", "dtps"], ["Time OOM (s)", "oom_seconds"], ["Fight (s)", "fight_seconds"], ["Iterations", "iterations"]];
+  out.push(el("table", { style: "margin-top:12px" }, el("thead", {}, el("tr", {}, el("th", {}, ""), el("th", { class: "num" }, "Baseline"), el("th", { class: "num" }, "Patched"), el("th", { class: "num" }, "Change"))),
+    el("tbody", {}, ...extras.filter(([, k]) => b[k] || p[k]).map(([label, k]) =>
+      el("tr", {}, el("td", {}, label), el("td", { class: "num" }, fmt(b[k], k === "iterations" ? 0 : 1)), el("td", { class: "num" }, fmt(p[k], k === "iterations" ? 0 : 1)), el("td", { class: "num" }, k === "iterations" ? "" : delta(b[k], p[k])))))));
+
+  // Per-spell breakdown, matched by spell id (or name).
+  const key = (a) => `${a.spell ?? ""}|${a.name}`;
+  const rows = new Map();
+  for (const a of b.actions || []) rows.set(key(a), { name: a.name, spell: a.spell, b: a });
+  for (const a of p.actions || []) { const r = rows.get(key(a)) || { name: a.name, spell: a.spell }; r.p = a; rows.set(key(a), r); }
+  const list = [...rows.values()].filter((r) => (r.b?.[metric] || 0) > 0 || (r.p?.[metric] || 0) > 0).sort((x, y) => ((y.p?.[metric] ?? y.b?.[metric] ?? 0) - (x.p?.[metric] ?? x.b?.[metric] ?? 0)));
+  const top = Math.max(1, ...list.map((r) => Math.max(r.b?.[metric] || 0, r.p?.[metric] || 0)));
+  if (list.length) {
+    out.push(el("h3", {}, "Breakdown by ability"));
+    out.push(el("table", {}, el("thead", {}, el("tr", {}, el("th", {}, "Ability"), el("th", { style: "width:22%" }, ""), el("th", { class: "num" }, `Baseline ${M}`), el("th", { class: "num" }, `Patched ${M}`), el("th", { class: "num" }, "Change"), el("th", { class: "num" }, "Casts (b / p)"))),
+      el("tbody", {}, ...list.map((r) => el("tr", {},
+        el("td", { title: r.spell ? `Spell ${r.spell}` : "" }, r.name),
+        el("td", {}, el("div", { class: "bar", style: `width:${((r.p?.[metric] ?? r.b?.[metric] ?? 0) / top * 100).toFixed(1)}%` })),
+        el("td", { class: "num" }, fmt(r.b?.[metric])), el("td", { class: "num" }, fmt(r.p?.[metric])), el("td", { class: "num" }, delta(r.b?.[metric], r.p?.[metric] ?? 0)),
+        el("td", { class: "num sub" }, `${fmt(r.b?.casts, 1)} / ${fmt(r.p?.casts, 1)}`))))));
+  }
+  const applied = p.applied || result.applied || [];
+  if (applied.length) {
+    out.push(el("h3", {}, "Applied changes"));
+    out.push(el("table", {}, el("tbody", {}, ...applied.map((a) => el("tr", {},
+      el("td", {}, typeof a.change === "string" ? a.change : JSON.stringify(a.change)),
+      el("td", { class: "sub" }, a.note || ""),
+      el("td", { class: "sub" }, [a.rows !== undefined ? `${Array.isArray(a.rows) ? a.rows.length : a.rows} rows` : "", a.fields !== undefined ? `${Array.isArray(a.fields) ? a.fields.length : a.fields} fields` : ""].filter(Boolean).join(", ")))))));
+  }
+  out.push(el("div", { class: "sub", style: "margin-top:10px" }, `${state.presetName}${result.overrides?.label ? " · " + result.overrides.label : ""} · ${fmt(seconds, 1)} s`));
+  $("results").replaceChildren(...out);
+}
+
+init();
+</script>
+</body>
+</html>

@@ -3,6 +3,9 @@
 //! See `patches/README.md`. Fork-only tooling; the engine's own `forever-engine` binary is
 //! unchanged.
 
+#[path = "../web/mod.rs"]
+mod web;
+
 use forever_engine::{
     contracts::prepared_v2::PreparedV2, overrides, prepare_json_with, simulate_prepared_gated,
     validate_prepared, Gated, PrepareError, Rules,
@@ -30,6 +33,8 @@ USAGE
       client rows for a spell name (substring) or ID, to write row and curve changes
   patchsim presets [--json]
       the preset characters under patches/presets
+  patchsim serve [--port 8080] [--no-open]
+      the web page on http://127.0.0.1:8080/: build a character, edit overrides, compare
   patchsim import --addon FILE --preset NAME [--outfile FILE]
       build a request from an addon or WoWSims Exporter export, on top of a preset
 ";
@@ -53,6 +58,7 @@ fn main() {
             }
         }),
         Some("import") => import(&args[1..]),
+        Some("serve") => web::serve(&args[1..]),
         Some("__one") => one(&args[1..]),
         _ => {
             print!("{USAGE}");
