@@ -15,6 +15,7 @@ mod core;
 mod data;
 mod engine;
 mod mechanics;
+pub mod overrides;
 #[allow(dead_code)]
 mod prepare;
 mod rotation;

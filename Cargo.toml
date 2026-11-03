@@ -2,6 +2,7 @@
 name = "forever-engine"
 version = "0.1.0"
 edition = "2021"
+default-run = "forever-engine"
 license = "MIT"
 description = "Experimental Frostbolt simulation kernel for MythicSim Forever"
 

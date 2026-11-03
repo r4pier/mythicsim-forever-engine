@@ -232,7 +232,9 @@ pub(crate) fn find(id: i32) -> Option<&'static Spell> {
     let mut cache = cache.lock().expect("spell cache");
     *cache.entry(id).or_insert_with(|| {
         super::SPELL_ROWS.row(i64::from(id)).map(|text| {
-            let row: Spell = serde_json::from_str(text)
+            // patchsim: a row override applies as the row is read (no-op unless installed).
+            let text = crate::overrides::patched_row(id, text);
+            let row: Spell = serde_json::from_str(&text)
                 .unwrap_or_else(|err| panic!("data/spells.jsonl row {id}: {err}"));
             &*Box::leak(Box::new(row))
         })
@@ -246,6 +248,12 @@ pub(crate) fn must_find(id: i32) -> &'static Spell {
 
 /// A talent's curve values by effect position and rank, `[effect][rank - 1]`.
 pub(crate) fn curve(id: i32) -> Option<&'static [Vec<f64>]> {
+    // patchsim: a curve override replaces the curve (no-op unless installed).
+    crate::overrides::patched_curve(id).or_else(|| raw_curve(id))
+}
+
+/// A talent's curve as the data carries it, without overrides.
+pub(crate) fn raw_curve(id: i32) -> Option<&'static [Vec<f64>]> {
     extras().curves.get(&id).map(Vec::as_slice)
 }
 
