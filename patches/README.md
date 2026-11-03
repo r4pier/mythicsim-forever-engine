@@ -36,7 +36,7 @@ Changing `overrides.json` needs no rebuild. Rebuild only after pulling new engin
 .\target\release\patchsim.exe serve
 ```
 
-This opens http://127.0.0.1:8080/ in your browser (`--port N` picks another port, `--no-open`
+This opens http://127.0.0.1:8090/ in your browser (`--port N` picks another port, `--no-open`
 skips the browser). The page works like MythicSim's sim page: pick class, spec and race, the fight
 length and targets, click talents in the trees, change reference gear and enchants by slot, and
 open Advanced settings for the fight, the boss, the rotation, buffs, debuffs and consumables.

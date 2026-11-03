@@ -33,8 +33,8 @@ USAGE
       client rows for a spell name (substring) or ID, to write row and curve changes
   patchsim presets [--json]
       the preset characters under patches/presets
-  patchsim serve [--port 8080] [--no-open]
-      the web page on http://127.0.0.1:8080/: build a character, edit overrides, compare
+  patchsim serve [--port 8090] [--no-open]
+      the web page on http://127.0.0.1:8090/: build a character, edit overrides, compare
   patchsim import --addon FILE --preset NAME [--outfile FILE]
       build a request from an addon or WoWSims Exporter export, on top of a preset
 ";

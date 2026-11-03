@@ -33,7 +33,7 @@ struct Server {
 
 /// Runs the server until the process is stopped. `args` are the words after `serve`.
 pub fn serve(args: &[String]) -> Result<(), String> {
-    let mut port: u16 = 8080;
+    let mut port: u16 = 8090;
     let mut open = true;
     let mut root: Option<PathBuf> = None;
     let mut index = 0;
