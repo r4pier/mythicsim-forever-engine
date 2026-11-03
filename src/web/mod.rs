@@ -21,6 +21,8 @@ use std::time::{SystemTime, UNIX_EPOCH};
 const INDEX_HTML: &str = include_str!("index.html");
 /// Talent trees by class, written by tools/web_talents.py from the engine's own layouts.
 const TALENTS_JSON: &str = include_str!("talents.json");
+/// Icon names for talents, buffs and consumables, written by tools/web_icons.py from Wowhead.
+const ICONS_JSON: &str = include_str!("icons.json");
 /// Request bodies above this are refused: a full request with a long rotation is far smaller.
 const MAX_BODY: usize = 8 * 1024 * 1024;
 
@@ -360,6 +362,7 @@ impl Server {
             "enchants": enchants,
             "races": self.races(),
             "talents": serde_json::from_str::<Value>(TALENTS_JSON).map_err(internal)?,
+            "icons": serde_json::from_str::<Value>(ICONS_JSON).map_err(internal)?,
         });
         Ok(self.catalog.get_or_init(|| catalog))
     }
